@@ -57,6 +57,38 @@
             min-height: 100vh;
             transition: background 0.6s ease, color 0.6s ease;
             overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Fundo giratório contínuo (agora visível em todo o site) */
+        .bg-logo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.12;
+        }
+        
+        .light-mode .bg-logo {
+            opacity: 0.07;
+        }
+        
+        .bg-logo img {
+            max-width: 1200px;
+            width: 95%;
+            animation: slowRotate 300s linear infinite;
+            filter: brightness(0.8) contrast(1.1);
+        }
+        
+        @keyframes slowRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
         
         header {
@@ -204,37 +236,7 @@
             font-size: 1.05em;
         }
         
-        /* Fundo rotativo */
-        .bg-logo {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.1;
-        }
-        
-        .light-mode .bg-logo {
-            opacity: 0.06;
-        }
-        
-        .bg-logo img {
-            max-width: 1000px;
-            width: 90%;
-            animation: slowRotate 240s linear infinite;
-        }
-        
-        @keyframes slowRotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Restante do portal (melhorias leves) */
+        /* Portal styles */
         .portal {
             max-width: 1600px;
             margin: auto;
@@ -278,7 +280,6 @@
             border: 1px solid var(--border-color);
         }
         
-        /* Outros estilos mantidos */
         .area pre {
             background: var(--pre-bg);
             padding: 30px;
@@ -311,6 +312,11 @@
 </head>
 
 <body>
+    <!-- Fundo giratório contínuo em todo o site -->
+    <div class="bg-logo">
+        <img src="https://i.ibb.co/Ld9hbLYW/redondo-logo-pablodesigner-Photoroom.png" alt="PabloDesigner Logo Giratório">
+    </div>
+
     <header>
         <b>🚀 Portal Criativo Ultimate - Milhares de Ideias - PabloDesigner</b>
         <div>
@@ -318,11 +324,6 @@
             <button id="themeToggle" title="Alternar tema">🌙</button>
         </div>
     </header>
-
-    <!-- Fundo rotativo (aparece apenas na tela de login/registro) -->
-    <div id="bgLogo" class="bg-logo">
-        <img src="https://i.ibb.co/Ld9hbLYW/redondo-logo-pablodesigner-Photoroom.png" alt="PabloDesigner Logo">
-    </div>
 
     <main>
         <!-- LOGIN -->
@@ -389,9 +390,8 @@
     </main>
 
     <script>
-        // (Todo o JavaScript original mantido, com pequena adição para esconder o fundo rotativo ao entrar no portal)
+        // Todo o JavaScript original (sem alterações, exceto remoção do hide do bg-logo)
 
-        // Variáveis globais para jogos
         let secretNumber = 0;
         let guessAttempts = 0;
         let tttBoard = Array(9).fill('');
@@ -400,7 +400,6 @@
         let hangmanWrong = 0;
         const hangmanWords = ['javascript', 'programacao', 'criativo', 'youtube', 'instagram', 'tiktok', 'musica', 'viagem', 'tecnologia', 'amor', 'felicidade', 'sucesso', 'motivacao', 'inspiracao', 'conteudo', 'viral', 'trending', 'brasil', 'digital', 'criador'];
 
-        // Funções auxiliares
         function randomChoice(arr) {
             return arr[Math.floor(Math.random() * arr.length)];
         }
@@ -497,8 +496,6 @@
             }
         }
 
-        // (Função generateContent mantida exatamente como estava – sem alterações)
-
         function generateContent() {
             const input = document.getElementById("inputTema");
             let tema = input ? input.value.trim() : '';
@@ -534,7 +531,7 @@
                     output += '</ul>';
                     break;
 
-                // (demais cases mantidos exatamente iguais ao original)
+                // (todos os outros cases permanecem exatamente iguais ao original)
 
                 default:
                     output = '<p>Mais ferramentas incríveis chegando em breve! Este portal está sempre crescendo 🚀</p>';
@@ -543,9 +540,8 @@
             if (outputElem) outputElem.innerHTML = output;
         }
 
-        // (Todos os jogos mantidos exatamente como estavam)
+        // (jogos permanecem inalterados)
 
-        // Sistema de login + tema (com adição para esconder o logo rotativo)
         document.addEventListener("DOMContentLoaded", () => {
             let theme = localStorage.getItem('theme') || 'dark';
             if (theme === 'light') {
@@ -636,7 +632,7 @@
                 userName.textContent = user;
                 logoutBtn.style.display = "block";
                 themeToggle.style.display = "block";
-                document.getElementById('bgLogo').style.display = 'none'; // <--- Esconde o logo rotativo
+                // Removido o hide do logo giratório → agora fica visível em todo o portal
             }
         });
     </script>
