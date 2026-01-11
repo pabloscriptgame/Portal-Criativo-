@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Criativo Ultimate - PabloDesigner</title>
+    <title>Portal Criativo Ultimate - Milhares de Ideias, Ferramentas & Jogos - PabloDesigner</title>
     <style>
         :root {
             --primary: #00e5ff;
@@ -44,213 +44,51 @@
         }
         
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Arial,sans-serif; }
-        body { 
-            background:var(--bg-gradient); 
-            color:var(--text-color); 
-            min-height:100vh; 
-            transition:background 0.6s ease, color 0.6s ease;
-            overflow-x:hidden;
-            position:relative;
-        }
+        body { background:var(--bg-gradient); color:var(--text-color); min-height:100vh; transition:all .6s; overflow-x:hidden; position:relative; }
         
-        .bg-logo {
-            position:fixed;
-            inset:0;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            pointer-events:none;
-            z-index:-1;
-            opacity:0.12;
-        }
+        .bg-logo { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; z-index:-1; opacity:0.12; }
         .light-mode .bg-logo { opacity:0.07; }
-        .bg-logo img {
-            max-width:1200px;
-            width:95%;
-            animation:slowRotate 300s linear infinite;
-            filter:brightness(0.8) contrast(1.1);
-        }
+        .bg-logo img { max-width:1200px; width:95%; animation:slowRotate 300s linear infinite; filter:brightness(0.8) contrast(1.1); }
         @keyframes slowRotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
         
-        header {
-            background:var(--header-bg);
-            backdrop-filter:blur(12px);
-            padding:18px 30px;
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            box-shadow:0 4px 30px rgba(0,0,0,0.7);
-            position:sticky;
-            top:0;
-            z-index:10;
-        }
+        header { background:var(--header-bg); backdrop-filter:blur(12px); padding:18px 30px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 4px 30px rgba(0,0,0,0.7); position:sticky; top:0; z-index:10; }
         header b { font-size:1.4em; }
-        header button {
-            background:linear-gradient(135deg,var(--primary),var(--primary2));
-            border:none;
-            padding:12px 26px;
-            border-radius:50px;
-            font-weight:700;
-            cursor:pointer;
-            box-shadow:var(--glow);
-            transition:all .4s ease;
-            margin-left:12px;
-        }
-        header button:hover {
-            transform:translateY(-4px);
-            box-shadow:0 0 50px rgba(0,229,255,0.7);
-        }
+        header button { background:linear-gradient(135deg,var(--primary),var(--primary2)); border:none; padding:12px 26px; border-radius:50px; font-weight:700; cursor:pointer; box-shadow:var(--glow); transition:all .4s; margin-left:12px; }
+        header button:hover { transform:translateY(-4px); box-shadow:0 0 50px rgba(0,229,255,0.7); }
         
         main { padding:30px; min-height:100vh; display:flex; align-items:center; justify-content:center; position:relative; }
         .hidden { display:none; }
         
-        input, textarea {
-            width:100%;
-            padding:16px;
-            margin:14px 0;
-            border-radius:16px;
-            border:1px solid var(--border-color);
-            background:var(--input-bg);
-            color:var(--text-color);
-            backdrop-filter:blur(12px);
-            transition:all .3s ease;
-            font-size:1.1em;
-        }
-        input:focus, textarea:focus {
-            outline:none;
-            box-shadow:var(--glow);
-            border-color:var(--primary);
-        }
+        input, textarea { width:100%; padding:16px; margin:14px 0; border-radius:16px; border:1px solid var(--border-color); background:var(--input-bg); color:var(--text-color); backdrop-filter:blur(12px); transition:all .3s; font-size:1.1em; }
+        input:focus, textarea:focus { outline:none; box-shadow:var(--glow); border-color:var(--primary); }
         
-        button {
-            width:100%;
-            padding:16px;
-            border:none;
-            border-radius:50px;
-            background:linear-gradient(135deg,var(--primary),var(--primary2));
-            font-weight:800;
-            cursor:pointer;
-            margin:16px 0;
-            box-shadow:var(--glow);
-            transition:all .4s ease;
-            font-size:1.2em;
-            text-transform:uppercase;
-            letter-spacing:1px;
-        }
-        button:hover {
-            transform:translateY(-5px) scale(1.04);
-            box-shadow:0 0 50px rgba(0,229,255,0.7);
-        }
+        button { width:100%; padding:16px; border:none; border-radius:50px; background:linear-gradient(135deg,var(--primary),var(--primary2)); font-weight:800; cursor:pointer; margin:16px 0; box-shadow:var(--glow); transition:all .4s; font-size:1.2em; text-transform:uppercase; letter-spacing:1px; }
+        button:hover { transform:translateY(-5px) scale(1.04); box-shadow:0 0 50px rgba(0,229,255,0.7); }
+        button:disabled { opacity:0.6; cursor:not-allowed; }
         
-        .card {
-            width:100%;
-            max-width:460px;
-            background:var(--card-bg);
-            backdrop-filter:blur(25px);
-            padding:50px 40px;
-            border-radius:32px;
-            box-shadow:var(--shadow-card);
-            text-align:center;
-            border:1px solid var(--border-color);
-            animation:fadeInCard 1s ease-out forwards;
-        }
-        @keyframes fadeInCard {
-            0% { opacity:0; transform:translateY(40px) scale(0.95); }
-            100% { opacity:1; transform:translateY(0) scale(1); }
-        }
+        .card { width:100%; max-width:460px; background:var(--card-bg); backdrop-filter:blur(25px); padding:50px 40px; border-radius:32px; box-shadow:var(--shadow-card); text-align:center; border:1px solid var(--border-color); animation:fadeInCard 1s ease-out forwards; }
+        @keyframes fadeInCard { 0%{opacity:0;transform:translateY(40px)scale(0.95)} 100%{opacity:1;transform:translateY(0)scale(1)} }
         
-        .logo-card {
-            width:160px;
-            border-radius:50%;
-            margin:0 auto 30px;
-            display:block;
-            box-shadow:var(--glow);
-            border:3px solid var(--primary);
-        }
+        .logo-card { width:160px; border-radius:50%; margin:0 auto 30px; display:block; box-shadow:var(--glow); border:3px solid var(--primary); }
         
-        .card h2 {
-            font-size:2.2em;
-            margin-bottom:12px;
-            background:linear-gradient(135deg,var(--primary),var(--primary2));
-            -webkit-background-clip:text;
-            -webkit-text-fill-color:transparent;
-        }
+        .card h2 { font-size:2.2em; margin-bottom:12px; background:linear-gradient(135deg,var(--primary),var(--primary2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
         
-        .msg { margin-top:20px; color:#ff6b6b; font-weight:bold; font-size:1.05em; }
+        .msg { margin-top:20px; font-weight:bold; font-size:1.05em; min-height:1.4em; }
+        .success { color:#00ff9d; }
+        .error { color:#ff6b6b; }
         
         .portal { max-width:1600px; margin:auto; width:100%; }
+        .menu { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px; margin-bottom:60px; }
+        .menu div { background:var(--card-bg); backdrop-filter:blur(18px); padding:40px; border-radius:26px; cursor:pointer; text-align:center; transition:all .5s; box-shadow:var(--shadow-menu); border:1px solid var(--border-color); font-size:1.2em; font-weight:600; }
+        .menu div:hover { transform:translateY(-16px) scale(1.08); box-shadow:0 30px 70px rgba(0,212,255,0.4); background:var(--hover-bg); }
         
-        .menu {
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-            gap:30px;
-            margin-bottom:60px;
-        }
+        .area { background:var(--card-bg); backdrop-filter:blur(25px); padding:50px; border-radius:32px; min-height:700px; box-shadow:var(--shadow-card); border:1px solid var(--border-color); }
+        .area pre { background:var(--pre-bg); padding:30px; border-radius:16px; white-space:pre-wrap; margin-top:30px; border-left:6px solid var(--primary); font-size:1.05em; line-height:1.7; overflow-x:auto; }
         
-        .menu div {
-            background:var(--card-bg);
-            backdrop-filter:blur(18px);
-            padding:40px;
-            border-radius:26px;
-            cursor:pointer;
-            text-align:center;
-            transition:all .5s ease;
-            box-shadow:var(--shadow-menu);
-            border:1px solid var(--border-color);
-            font-size:1.2em;
-            font-weight:600;
-        }
-        .menu div:hover {
-            transform:translateY(-16px) scale(1.08);
-            box-shadow:0 30px 70px rgba(0,212,255,0.4);
-            background:var(--hover-bg);
-        }
-        
-        .area {
-            background:var(--card-bg);
-            backdrop-filter:blur(25px);
-            padding:50px;
-            border-radius:32px;
-            min-height:700px;
-            box-shadow:var(--shadow-card);
-            border:1px solid var(--border-color);
-        }
-        
-        .area pre {
-            background:var(--pre-bg);
-            padding:30px;
-            border-radius:16px;
-            white-space:pre-wrap;
-            margin-top:30px;
-            border-left:6px solid var(--primary);
-            font-size:1.05em;
-            line-height:1.7;
-            overflow-x:auto;
-        }
-        
-        .cell {
-            width:110px;
-            height:110px;
-            background:var(--cell-bg);
-            border-radius:16px;
-            font-size:2.8em;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            cursor:pointer;
-            user-select:none;
-        }
+        .cell { width:110px; height:110px; background:var(--cell-bg); border-radius:16px; font-size:2.8em; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; }
         
         a { color:var(--primary); text-decoration:none; font-weight:600; }
         a:hover { text-decoration:underline; }
-        
-        #loading { 
-            text-align:center; 
-            font-size:1.3em; 
-            margin:40px 0; 
-            color:var(--primary);
-            display:none;
-        }
     </style>
 </head>
 <body>
@@ -260,9 +98,9 @@
 </div>
 
 <header>
-    <b>🚀 Portal Criativo Ultimate - PabloDesigner</b>
+    <b>🚀 Portal Criativo Ultimate - Milhares de Ideias - PabloDesigner</b>
     <div>
-        <button id="logoutBtn">Sair</button>
+        <button id="logoutBtn" style="display:none;">Sair</button>
         <button id="themeToggle" title="Alternar tema">🌙</button>
     </div>
 </header>
@@ -274,8 +112,8 @@
         <img src="https://i.ibb.co/Ld9hbLYW/redondo-logo-pablodesigner-Photoroom.png" class="logo-card" alt="Logo">
         <h2>Acessar Conta</h2>
         <p class="subtitle">Entre no Portal Criativo Ultimate 🚀</p>
-        <input id="loginUser" placeholder="Usuário">
-        <input id="loginPass" type="password" placeholder="Senha">
+        <input id="loginUser" placeholder="Usuário" autocomplete="username">
+        <input id="loginPass" type="password" placeholder="Senha" autocomplete="current-password">
         <button id="loginBtn">Entrar</button>
         <p><a href="#" id="goRegister">Não tem conta? Criar agora</a></p>
         <div id="loginMsg" class="msg"></div>
@@ -285,29 +123,22 @@
     <div id="registerBox" class="card hidden">
         <img src="https://i.ibb.co/Ld9hbLYW/redondo-logo-pablodesigner-Photoroom.png" class="logo-card" alt="Logo">
         <h2>Criar Conta Gratuita</h2>
-        <p class="subtitle">Junte-se ao Portal Ultimate 🚀</p>
-        <input id="regUser" placeholder="Usuário">
-        <input id="regPass" type="password" placeholder="Senha">
+        <p class="subtitle">Junte-se ao Portal Criativo Ultimate 🚀</p>
+        <input id="regUser" placeholder="Usuário (mín. 3 caracteres)" autocomplete="username">
+        <input id="regPass" type="password" placeholder="Senha (mín. 4 caracteres)" autocomplete="new-password">
         <button id="registerBtn">Cadastrar</button>
         <p><a href="#" id="goLogin">Já tem conta? Entrar</a></p>
         <div id="regMsg" class="msg"></div>
     </div>
 
-    <!-- PORTAL PRINCIPAL -->
+    <!-- PORTAL -->
     <div id="portal" class="portal hidden">
         <h2 style="text-align:center; margin-bottom:50px; font-size:2.4em;">
             Bem-vindo ao Portal Ultimate, <span id="userName"></span> 👋
         </h2>
 
-        <div style="text-align:center; margin:30px 0; max-width:600px; margin-left:auto; margin-right:auto;">
-            <label>GROQ API Key (necessária para gerar conteúdo com IA):</label>
-            <input id="groqKey" type="password" placeholder="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">
-            <button onclick="saveGroqKey()" style="margin-top:12px; width:auto; padding:12px 30px;">Salvar Chave</button>
-            <div id="groqKeyStatus" style="margin-top:10px; font-size:0.95em;"></div>
-        </div>
-
         <div class="menu">
-            <div onclick="showSection('Ideias de conteúdo')">💡 Ideias de Conteúdo</div>
+            <div onclick="showSection('Ideias de conteúdo')">💡 Ideias de Conteúdo (2000+)</div>
             <div onclick="showSection('Roteiro de vídeo')">🎬 Roteiro Completo de Vídeo</div>
             <div onclick="showSection('Estrutura de música')">🎵 Estrutura Detalhada de Música</div>
             <div onclick="showSection('Prompt para IA')">🤖 Prompts Avançados para IA</div>
@@ -316,7 +147,7 @@
             <div onclick="showSection('Hashtags')">🏷️ Pacotes de Hashtags</div>
             <div onclick="showSection('Ideias Thumbnail')">🖼️ Ideias Detalhadas Thumbnail</div>
             <div onclick="showSection('Letras de música')">🎤 Letras Completas de Música</div>
-            <!-- Jogos mantidos -->
+            <div onclick="showSection('Baixar MP3 YouTube')">🔊 Baixar MP3 YouTube</div>
             <div onclick="showSection('Pedra Papel Tesoura')">✊✋✂️ Pedra Papel Tesoura</div>
             <div onclick="showSection('Jogo da Velha')">❌⭕ Jogo da Velha</div>
             <div onclick="showSection('Adivinhe o Número')">🔢 Adivinhe o Número</div>
@@ -325,169 +156,281 @@
 
         <div id="area" class="area">
             <p style="text-align:center; padding-top:180px; font-size:1.5em;">
-                Escolha uma opção acima para começar a criar! 🚀
+                Escolha uma das muitas opções acima para começar a criar! 🚀
             </p>
         </div>
     </div>
 
 </main>
 
-<div id="loading">Gerando conteúdo com IA Groq... aguarde...</div>
-
 <script>
-// =================== CONFIGURAÇÃO GROQ ===================
-const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
-let GROQ_API_KEY = localStorage.getItem("groqApiKey") || "";
+// =============================================
+//          Sistema de Login/Cadastro Melhorado
+// =============================================
 
-function saveGroqKey() {
-    const keyInput = document.getElementById("groqKey");
-    const status = document.getElementById("groqKeyStatus");
-    
-    if (!keyInput.value.trim()) {
-        status.textContent = "Digite uma chave válida!";
-        status.style.color = "#ff6b6b";
+function showMessage(elId, text, isSuccess = false) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    el.textContent = text;
+    el.className = "msg " + (isSuccess ? "success" : "error");
+    setTimeout(() => el.textContent = "", 8000);
+}
+
+function getUsers() {
+    try {
+        const data = localStorage.getItem("users");
+        return data ? JSON.parse(data) : {};
+    } catch(e) {
+        console.error("Erro lendo users:", e);
+        return {};
+    }
+}
+
+function saveUsers(usersObj) {
+    try {
+        localStorage.setItem("users", JSON.stringify(usersObj));
+        return true;
+    } catch(e) {
+        console.error("Erro salvando users:", e);
+        return false;
+    }
+}
+
+function login() {
+    const btn = document.getElementById("loginBtn");
+    btn.disabled = true;
+
+    const user = document.getElementById("loginUser")?.value?.trim();
+    const pass = document.getElementById("loginPass")?.value;
+
+    if (!user || !pass) {
+        showMessage("loginMsg", "Preencha usuário e senha");
+        btn.disabled = false;
         return;
     }
-    
-    GROQ_API_KEY = keyInput.value.trim();
-    localStorage.setItem("groqApiKey", GROQ_API_KEY);
-    keyInput.value = "";
-    
-    status.textContent = "✓ Chave salva com sucesso! (armazenada apenas no seu navegador)";
-    status.style.color = "#00e5ff";
-}
 
-async function callGroqAPI(prompt, model = "llama-3.1-70b-versatile") {
-    if (!GROQ_API_KEY) {
-        return "** ERRO: Configure sua chave Groq primeiro no campo acima! **\n\n" +
-               "Você precisa de uma chave válida da Groq (começa com gsk_...)";
+    const users = getUsers();
+
+    if (users[user] === pass) {
+        localStorage.setItem("session", user);
+        showMessage("loginMsg", "Login realizado! Entrando...", true);
+        setTimeout(() => openPortal(user), 1200);
+    } else {
+        showMessage("loginMsg", "Usuário ou senha incorretos");
     }
 
-    const loading = document.getElementById("loading");
-    loading.style.display = "block";
+    btn.disabled = false;
+}
 
-    try {
-        const response = await fetch(GROQ_API_URL, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${GROQ_API_KEY}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                model: model,
-                messages: [
-                    { role: "system", content: "Você é um assistente criativo extremamente detalhista e profissional." },
-                    { role: "user", content: prompt }
-                ],
-                temperature: 0.82,
-                max_tokens: 3800,
-                top_p: 0.95
-            })
-        });
+function register() {
+    const btn = document.getElementById("registerBtn");
+    btn.disabled = true;
 
-        if (!response.ok) {
-            const err = await response.json();
-            throw new Error(err.error?.message || "Erro na API Groq");
-        }
+    const user = document.getElementById("regUser")?.value?.trim();
+    const pass = document.getElementById("regPass")?.value;
 
-        const data = await response.json();
-        return data.choices[0].message.content.trim();
-    } catch (err) {
-        console.error(err);
-        return "** ERRO AO CHAMAR A API GROQ **\n\n" + err.message;
-    } finally {
-        loading.style.display = "none";
+    if (!user || user.length < 3) {
+        showMessage("regMsg", "Usuário precisa ter pelo menos 3 caracteres");
+        btn.disabled = false;
+        return;
+    }
+    if (!pass || pass.length < 4) {
+        showMessage("regMsg", "Senha precisa ter pelo menos 4 caracteres");
+        btn.disabled = false;
+        return;
+    }
+
+    const users = getUsers();
+
+    if (users[user]) {
+        showMessage("regMsg", "Este usuário já existe");
+        btn.disabled = false;
+        return;
+    }
+
+    users[user] = pass;
+
+    if (saveUsers(users)) {
+        showMessage("regMsg", "Conta criada com sucesso! Pode fazer login ✓", true);
+        setTimeout(() => {
+            document.getElementById("registerBox").classList.add("hidden");
+            document.getElementById("loginBox").classList.remove("hidden");
+        }, 1800);
+    } else {
+        showMessage("regMsg", "Erro ao salvar (localStorage bloqueado?)");
+    }
+
+    btn.disabled = false;
+}
+
+function openPortal(username) {
+    document.getElementById("loginBox").classList.add("hidden");
+    document.getElementById("registerBox").classList.add("hidden");
+    document.getElementById("portal").classList.remove("hidden");
+    document.getElementById("userName").textContent = username;
+    document.getElementById("logoutBtn").style.display = "block";
+}
+
+function logout() {
+    localStorage.removeItem("session");
+    location.reload();
+}
+
+function checkSession() {
+    const session = localStorage.getItem("session");
+    if (!session) return;
+
+    const users = getUsers();
+    if (users[session]) {
+        openPortal(session);
+    } else {
+        localStorage.removeItem("session");
     }
 }
 
-// =================== JOGOS (mantidos iguais) ===================
+// =============================================
+//          Jogos e funcionalidades originais
+// =============================================
+
 let secretNumber = 0;
 let guessAttempts = 0;
 let tttBoard = Array(9).fill('');
 let hangmanWord = '';
 let hangmanGuessed = [];
 let hangmanWrong = 0;
-const hangmanWords = ['javascript','programacao','criativo','youtube','instagram','tiktok','musica','viagem','tecnologia','amor','felicidade','sucesso','motivacao','inspiracao','conteudo','viral','trending','brasil','digital','criador'];
+const hangmanWords = ['javascript', 'programacao', 'criativo', 'youtube', 'instagram', 'tiktok', 'musica', 'viagem', 'tecnologia', 'amor', 'felicidade', 'sucesso', 'motivacao', 'inspiracao', 'conteudo', 'viral', 'trending', 'brasil', 'digital', 'criador'];
 
-function randomChoice(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
+function randomChoice(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
 
-// ... (funções dos jogos permanecem iguais - copie do seu código original se necessário)
+function extractYouTubeID(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*)/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+}
 
 let currentSection = '';
 
-async function showSection(section) {
+function showSection(section) {
     currentSection = section;
     const area = document.getElementById("area");
     let html = `<h3>${section}</h3>`;
 
-    if (['Pedra Papel Tesoura','Jogo da Velha','Adivinhe o Número','Jogo da Forca'].includes(section)) {
-        // Jogos normais - mantenha sua lógica original aqui
-        // (copie as partes correspondentes do seu código antigo)
-        html += "<p style='color:#ffcc00'>Jogo ainda em modo clássico (sem IA por enquanto)</p>";
-        // ... coloque aqui o HTML dos jogos como estava antes
-    } 
-    else if (section === 'Baixar MP3 YouTube') {
+    if (section === 'Baixar MP3 YouTube') {
         html += `
-            <p>Insira a URL do YouTube:</p>
-            <input id="inputSpecial" placeholder="https://www.youtube.com/watch?v=...">
-            <button onclick="window.open('https://www.y2mate.com/pt/youtube/'+document.getElementById('inputSpecial').value.split('v=')[1],'_blank')">
-                Abrir Downloader MP3
-            </button>
-            <p style="color:#ff6b6b; margin-top:20px;"><strong>Aviso:</strong> Use apenas conteúdos livres de direitos ou com permissão!</p>`;
-    } 
-    else {
+            <p>Insira a URL do vídeo do YouTube para abrir o downloader externo (y2mate).</p>
+            <p style="color:#ff6b6b;"><strong>Aviso importante: Use apenas para conteúdos sem direitos autorais ou com permissão explícita!</strong></p>
+            <input id="inputSpecial" placeholder="https://www.youtube.com/watch?v=..." style="margin:15px 0;">
+            <button onclick="specialAction()">Abrir Downloader MP3</button>`;
+    } else if (section === 'Pedra Papel Tesoura') {
         html += `
-            <label for="inputTema">Tema / palavra-chave:</label>
-            <input id="inputTema" placeholder="Ex: viagens espaciais, motivação fitness, tecnologia 2026...">
-            <button onclick="generateWithAI()">Gerar com IA Groq</button>
-            <div id="output" style="margin-top:30px; white-space:pre-wrap;"></div>`;
+            <p>Desafie o computador neste clássico!</p>
+            <div style="text-align:center; margin:40px 0;">
+                <button onclick="playRPS('pedra')" style="width:auto; margin:15px; font-size:1.8em; padding:20px 40px;">✊ Pedra</button>
+                <button onclick="playRPS('papel')" style="width:auto; margin:15px; font-size:1.8em; padding:20px 40px;">✋ Papel</button>
+                <button onclick="playRPS('tesoura')" style="width:auto; margin:15px; font-size:1.8em; padding:20px 40px;">✂️ Tesoura</button>
+            </div>
+            <div id="rpsResult" style="font-size:1.5em; margin-top:40px;"></div>`;
+    } else if (section === 'Jogo da Velha') {
+        tttBoard = Array(9).fill('');
+        html += `
+            <p>Jogue contra o computador (você é ❌, computador ⭕)</p>
+            <div style="display:grid; grid-template-columns:repeat(3,120px); gap:14px; width:380px; margin:50px auto;">
+                ${Array(9).fill(0).map((_,i) => `<div class="cell" id="cell${i}" onclick="playerMove(${i})"></div>`).join('')}
+            </div>
+            <div id="tttResult" style="text-align:center; margin:40px 0; font-size:1.6em;"></div>
+            <button onclick="resetTTT()">Novo Jogo</button>`;
+    } else if (section === 'Adivinhe o Número') {
+        secretNumber = Math.floor(Math.random() * 100) + 1;
+        guessAttempts = 0;
+        html += `
+            <p>Escolhi um número entre 1 e 100. Quantas tentativas você precisa?</p>
+            <input id="guessInput" type="number" min="1" max="100" placeholder="Seu palpite">
+            <button onclick="guessNumber()">Adivinhar</button>
+            <div id="guessResult" style="margin-top:40px; line-height:1.8;"></div>
+            <button onclick="newGuessGame()" style="margin-top:30px;">Novo Jogo</button>`;
+    } else if (section === 'Jogo da Forca') {
+        hangmanWord = randomChoice(hangmanWords).toUpperCase();
+        hangmanGuessed = [];
+        hangmanWrong = 0;
+        html += `
+            <p>Adivinhe a palavra! Tema: Palavras comuns da criação de conteúdo</p>
+            <div class="hangman-display" id="hangmanWord">${getHangmanDisplay()}</div>
+            <p>Letras erradas: <span id="wrongLetters"></span></p>
+            <p>Tentativas restantes: <span id="attemptsLeft">6</span></p>
+            <input id="letterInput" maxlength="1" placeholder="Digite uma letra" style="width:200px; text-transform:uppercase;">
+            <button onclick="guessLetter()">Adivinhar Letra</button>
+            <button onclick="showSection('Jogo da Forca')" style="margin-top:20px;">Novo Jogo</button>
+            <div id="hangmanResult" style="margin-top:30px; font-size:1.4em;"></div>`;
+    } else {
+        html += `
+            <label for="inputTema">Tema / palavra-chave (obrigatório para melhores resultados):</label>
+            <input id="inputTema" placeholder="Ex: viagens, tecnologia, amor, motivação, fitness...">
+            <button onclick="generateContent()">Gerar Conteúdo Completo</button>
+            <div id="output" style="margin-top:40px;"></div>`;
     }
 
     area.innerHTML = html;
+
+    if (document.getElementById("inputTema")) {
+        generateContent();
+    }
 }
 
-async function generateWithAI() {
-    const tema = document.getElementById("inputTema")?.value.trim() || "criatividade e crescimento pessoal";
-    const output = document.getElementById("output");
-    
-    if (!output) return;
+function generateContent() {
+    const input = document.getElementById("inputTema");
+    let tema = input ? input.value.trim() : '';
+    if (!tema) tema = 'criatividade e sucesso';
 
-    let prompt = "";
+    let output = '';
+    const outputElem = document.getElementById("output");
 
-    switch(currentSection) {
+    switch (currentSection) {
         case 'Ideias de conteúdo':
-            prompt = `Crie 12 ideias de conteúdo muito criativas, virais e detalhadas para o tema: "${tema}"\n\nPara cada ideia inclua:\n- Título chamativo\n- Formato sugerido (vídeo longo, short, reel, post carrossel, etc)\n- Descrição breve do que seria o conteúdo\n- Por que pode viralizar\n- Público-alvo aproximado`;
+            const tipos = [
+                "Top 20", "Tutorial definitivo", "Review completo", "Minha jornada com", "Como dominar",
+                "Dicas avançadas para", "Os melhores ferramentas de", "Desafio de 90 dias", "Segredos que ninguém revela sobre",
+                "Vlog diário sobre", "Erros fatais em", "Comparação épica", "Rotina produtiva com", "Mitos vs realidade sobre",
+                "Como criar em casa", "Tendências 2026 de", "Como mudou minha vida", "Unboxing premium de", "Projetos DIY incríveis para",
+                "Receitas saudáveis com", "Viagens dos sonhos inspiradas em", "Transformação completa com", "Antes e depois chocante de",
+                "Como economizar muito em", "Previsões bombásticas para", "Reação sincera a", "Paródia hilária de", "Colab ideias sobre",
+                "Q&A completo sobre", "Behind the scenes real de", "Um dia intenso com", "Benefícios científicos de", "Como evitar armadilhas em",
+                "Ranking definitivo de", "História completa de", "Fatos impressionantes sobre", "Challenge extremo com", "Tour virtual por",
+                "Testando gadgets de", "Life hacks geniais para", "Série exclusiva sobre", "Novidades quentes em", "Minha opinião polêmica sobre",
+                "Análise profunda de", "Estratégias profissionais para", "Como crescer rápido no nicho de", "Casos reais de sucesso em",
+                "Ferramentas essenciais para", "Ideias baratas e eficazes para", "Motivação diária para", "Os piores produtos de",
+                "Melhor vs pior de", "Guia absoluto para", "Segredos dos tops sobre", "Como eu alcancei resultados com", "Teste de 7 dias de",
+                "Recomendações premium de", "Lista gigante de", "Passo a passo detalhado para", "Entrevista fictícia com especialista em",
+                "Resenha honesta de", "Comparação lado a lado", "Tutorial master de", "Desafio insano de", "24 horas vivendo",
+                "Transformação radical com", "Os mais virais sobre", "Memes engraçados de", "Dicas secretas de experts em",
+                "Rotina matinal com", "Como ganhar dinheiro com", "Os maiores mitos sobre", "Como começar do zero em", "Evolução de"
+            ];
+            output = '<strong>2000 ideias ultra detalhadas geradas para o tema "' + tema + '":</strong><ul>';
+            for (let i = 0; i < 2000; i++) {
+                output += `<li>${i+1}. ${randomChoice(tipos)} ${tema} – com dicas práticas, exemplos reais e estratégias comprovadas</li>`;
+            }
+            output += '</ul>';
             break;
-            
-        case 'Roteiro de vídeo':
-            prompt = `Escreva um roteiro completo e profissional de vídeo de 8-12 minutos sobre o tema: "${tema}"\n\nEstrutura:\n1. Introdução impactante (hook 10-15s)\n2. Desenvolvimento com 3-5 blocos principais\n3. Call to action forte no final\nInclua marcações de tempo aproximadas e sugestões de cortes visuais.`;
-            break;
-            
-        case 'Títulos YouTube':
-            prompt = `Crie 25 títulos de YouTube extremamente chamativos, otimizados para CTR e SEO sobre o tema: "${tema}"\n\nUse diferentes estilos: números, perguntas, emoção forte, curiosidade, polêmica leve, transformação, etc.`;
-            break;
-            
-        case 'Descrições YouTube':
-            prompt = `Escreva 3 descrições completas e otimizadas para YouTube (200-300 palavras cada) sobre o tema: "${tema}"\n\nInclua:\n- Primeiras 2-3 linhas que aparecem sem expandir\n- Chamadas para ação\n- Links fictícios relevantes\n- Hashtags no final\n- Emojis estratégicos`;
-            break;
-            
+
         default:
-            prompt = `Crie conteúdo criativo e detalhado sobre o tema: "${tema}"\nContexto: Portal Criativo Ultimate - ${currentSection}`;
+            output = '<p>Mais ferramentas incríveis chegando em breve! Este portal está sempre crescendo 🚀</p>';
     }
 
-    output.innerHTML = "Gerando com Groq (pode demorar alguns segundos)...";
-
-    const result = await callGroqAPI(prompt);
-    output.innerHTML = "```markdown\n" + result + "\n```";
+    if (outputElem) outputElem.innerHTML = output;
 }
 
-// Inicialização (igual ao original, só adicionando carregamento da chave)
+// =============================================
+//          Inicialização
+// =============================================
+
 document.addEventListener("DOMContentLoaded", () => {
-    // Tema
+    checkSession();
+
     let theme = localStorage.getItem('theme') || 'dark';
     if (theme === 'light') document.body.classList.add('light-mode');
-    
     document.getElementById('themeToggle').innerHTML = theme === 'light' ? '🌙' : '☀️';
+
     document.getElementById('themeToggle').onclick = () => {
         document.body.classList.toggle('light-mode');
         let newTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
@@ -495,16 +438,23 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('themeToggle').innerHTML = newTheme === 'light' ? '🌙' : '☀️';
     };
 
-    // ... resto da inicialização de login igual ao seu código original ...
-    
-    // Mostrar status da chave ao carregar
-    if (GROQ_API_KEY) {
-        document.getElementById("groqKeyStatus").textContent = 
-            "Chave Groq já configurada ✓ (armazenada localmente)";
-        document.getElementById("groqKeyStatus").style.color = "#00e5ff";
-    }
+    document.getElementById("loginBtn").onclick = login;
+    document.getElementById("registerBtn").onclick = register;
+
+    document.getElementById("goRegister").onclick = (e) => {
+        e.preventDefault();
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("registerBox").classList.remove("hidden");
+    };
+
+    document.getElementById("goLogin").onclick = (e) => {
+        e.preventDefault();
+        document.getElementById("registerBox").classList.add("hidden");
+        document.getElementById("loginBox").classList.remove("hidden");
+    };
+
+    document.getElementById("logoutBtn").onclick = logout;
 });
 </script>
 </body>
 </html>
-
