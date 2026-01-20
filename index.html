@@ -1,12 +1,804 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portal AI Magnífico 3D</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Portal Criativo Ultimate 3D • PabloDesigner</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-<h1>Portal AI Magnífico 3D</h1>
-<p>Upload final pronto.</p>
+
+<canvas id="bg-canvas"></canvas>
+
+<script>
+// ============================================================================
+//                          ESTILO (CSS) - tudo aqui dentro, modernizado
+// ============================================================================
+const styles = `
+    :root {
+        --primary: #00e5ff;
+        --primary2: #6a00ff;
+        --bg: radial-gradient(circle at top, #121a33, #05070d);
+        --header: rgba(5,7,13,0.85);
+        --card: rgba(18,26,51,0.8);
+        --text: #f0f0ff;
+        --glow: 0 0 24px rgba(0,229,255,0.45);
+        --input: rgba(14,21,48,0.9);
+        --border: rgba(0,229,255,0.25);
+    }
+
+    .light {
+        --primary: #00d4ff;
+        --primary2: #5e00e0;
+        --bg: radial-gradient(circle at top, #d0f0ff, #f8fcff);
+        --header: rgba(255,255,255,0.92);
+        --card: rgba(255,255,255,0.94);
+        --text: #111133;
+        --glow: 0 0 24px rgba(0,212,255,0.35);
+        --input: rgba(255,255,255,0.97);
+        --border: rgba(0,0,0,0.08);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui, -apple-system, sans-serif; }
+    body {
+        background:var(--bg);
+        color:var(--text);
+        min-height:100vh;
+        overflow-x:hidden;
+        perspective:1200px;
+    }
+
+    #bg-canvas { position:fixed; inset:0; z-index:-2; }
+
+    header {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        height: 48px; /* Mais fino ainda, moderno e elegante */
+        background: var(--header);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        z-index: 1000;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+        border-bottom: 1px solid var(--border);
+        transition: all 0.3s ease;
+    }
+
+    header:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+
+    header b { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.4px; }
+
+    header .user-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    header #user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid var(--primary);
+        box-shadow: var(--glow);
+        cursor: pointer;
+        object-fit: cover;
+        transition: all 0.3s;
+    }
+
+    header #user-avatar:hover { transform: scale(1.1); }
+
+    header button {
+        background: linear-gradient(135deg, var(--primary), var(--primary2));
+        border: none;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 999px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: var(--glow);
+        transition: all 0.3s;
+        font-size: 0.95rem;
+    }
+    header button:hover { transform: translateY(-2px) scale(1.04); }
+
+    main {
+        padding: 64px 16px 32px; /* Ajustado para header mais fino */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hidden { display: none !important; }
+
+    .card, .area, .menu > div {
+        background: var(--card);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        padding: 28px;
+        margin: 20px auto;
+        width: 100%;
+        max-width: 520px;
+        transition: all 0.4s ease;
+        transform-style: preserve-3d;
+    }
+
+    .card:hover, .menu > div:hover, .area:hover {
+        transform: translateY(-8px) translateZ(40px) scale(1.02);
+        box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    }
+
+    input, button {
+        width: 100%;
+        padding: 14px 18px;
+        margin: 12px 0;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--input);
+        color: var(--text);
+        font-size: 1.05rem;
+        transition: all 0.3s;
+    }
+
+    input[type="file"] { padding: 10px; }
+
+    input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: var(--glow);
+    }
+
+    button {
+        background: linear-gradient(135deg, var(--primary), var(--primary2));
+        border: none;
+        color: white;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        box-shadow: var(--glow);
+    }
+    button:hover { transform: translateY(-3px); box-shadow: 0 0 40px rgba(0,229,255,0.6); }
+
+    .menu {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+        width: 100%;
+        max-width: 1400px;
+        margin: 40px auto;
+    }
+
+    .menu > div {
+        text-align: center;
+        font-size: 1.15rem;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 32px 20px;
+        border-radius: 16px;
+    }
+
+    .logo {
+        width: 110px;
+        border-radius: 50%;
+        border: 3px solid var(--primary);
+        box-shadow: var(--glow);
+        margin: 0 auto 20px;
+        display: block;
+    }
+
+    h2 {
+        font-size: 2.1rem;
+        background: linear-gradient(135deg, var(--primary), var(--primary2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .msg {
+        min-height: 1.4em;
+        font-weight: 600;
+        margin-top: 12px;
+        text-align: center;
+    }
+    .success { color: #00ffaa; }
+    .error   { color: #ff5555; }
+
+    pre { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; overflow-x: auto; white-space: pre-wrap; }
+
+    .cell { width:100px; height:100px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:2.5em; display:flex; align-items:center; justify-content:center; cursor:pointer; margin:5px; transition: all 0.3s; }
+    .cell:hover { background:rgba(0,229,255,0.2); transform: scale(1.05); }
+
+    @media (max-width: 600px) {
+        header { height: 44px; padding: 0 12px; }
+        header b { font-size: 1.05rem; }
+        main { padding: 56px 12px 24px; }
+        .card, .area { padding: 24px 18px; }
+        .menu { grid-template-columns: 1fr; }
+        header button { padding: 5px 14px; font-size: 0.9rem; }
+        header #user-avatar { width: 28px; height: 28px; }
+    }
+
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+`;
+
+// ============================================================================
+//                          HTML DINÂMICO
+// ============================================================================
+const htmlContent = `
+<div id="bg-logo" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:-1;opacity:0.08;transform-style:preserve-3d;">
+    <img src="https://i.ibb.co/Ld9hbLY/redondo-logo-pablodesigner-Photoroom.png" alt="Logo" style="max-width:70%;animation:spin 280s linear infinite;">
+</div>
+
+<header>
+    <b>🚀 Portal Criativo Ultimate 3D</b>
+    <div class="user-info">
+        <img id="user-avatar" src="" alt="Avatar" style="display:none;" onclick="document.getElementById('foto-input').click();">
+        <input type="file" id="foto-input" accept="image/*" style="display:none;">
+        <button id="logout" style="display:none;">Sair</button>
+        <button id="theme">🌙</button>
+    </div>
+</header>
+
+<main>
+
+    <div id="login" class="card">
+        <img src="https://i.ibb.co/Ld9hbLY/redondo-logo-pablodesigner-Photoroom.png" class="logo" alt="Logo">
+        <h2>Entrar</h2>
+        <input id="user" placeholder="Usuário" autocomplete="username">
+        <input id="pass" type="password" placeholder="Senha" autocomplete="current-password">
+        <button id="entrar">Entrar</button>
+        <p style="margin-top:16px;text-align:center;">
+            <a href="#" id="ir-registro">Criar conta gratuita</a>
+        </p>
+        <div id="msg-login" class="msg"></div>
+    </div>
+
+    <div id="registro" class="card hidden">
+        <img src="https://i.ibb.co/Ld9hbLY/redondo-logo-pablodesigner-Photoroom.png" class="logo" alt="Logo">
+        <h2>Criar Conta</h2>
+        <input id="reg-user" placeholder="Usuário (mín 3)" autocomplete="username">
+        <input id="reg-pass" type="password" placeholder="Senha (mín 4)" autocomplete="new-password">
+        <button id="cadastrar">Cadastrar</button>
+        <p style="margin-top:16px;text-align:center;">
+            <a href="#" id="ir-login">Já tenho conta</a>
+        </p>
+        <div id="msg-reg" class="msg"></div>
+    </div>
+
+    <div id="portal" class="hidden">
+        <h2 style="margin:0 0 40px;">Bem-vindo, <span id="nome"></span> 👋</h2>
+
+        <div class="menu">
+            <div data-sec="Ideias de conteúdo">💡 Ideias de Conteúdo (2000+)</div>
+            <div data-sec="Roteiro de vídeo">🎬 Roteiro Completo de Vídeo</div>
+            <div data-sec="Estrutura de música">🎵 Estrutura Detalhada de Música</div>
+            <div data-sec="Prompt para IA">🤖 Prompts Avançados para IA</div>
+            <div data-sec="Títulos YouTube">📹 Títulos Virais YouTube</div>
+            <div data-sec="Descrições YouTube">📝 Descrições Completas YouTube</div>
+            <div data-sec="Hashtags">🏷️ Pacotes de Hashtags</div>
+            <div data-sec="Ideias Thumbnail">🖼️ Ideias Detalhadas Thumbnail</div>
+            <div data-sec="Letras de música">🎤 Letras Completas de Música</div>
+            <div data-sec="Baixar MP3 YouTube">🔊 Baixar MP3 YouTube</div>
+            <div data-sec="Pedra Papel Tesoura">✊✋✂️ Pedra Papel Tesoura</div>
+            <div data-sec="Jogo da Velha">❌⭕ Jogo da Velha</div>
+            <div data-sec="Adivinhe o Número">🔢 Adivinhe o Número</div>
+            <div data-sec="Jogo da Forca">🔤 Jogo da Forca</div>
+        </div>
+
+        <div id="conteudo" class="area">
+            <p style="text-align:center;padding:140px 0;font-size:1.4rem;opacity:0.7;">
+                Escolha uma das muitas opções acima para começar a criar! 🚀
+            </p>
+        </div>
+    </div>
+
+</main>
+`;
+
+// ============================================================================
+//                          INSERIR ESTILO + HTML
+// ============================================================================
+const styleElem = document.createElement('style');
+styleElem.textContent = styles;
+document.head.appendChild(styleElem);
+
+document.body.insertAdjacentHTML('beforeend', htmlContent);
+
+// ============================================================================
+//                          FUNDO 3D COM THREE.JS (não alterado)
+// ============================================================================
+let scene, camera, renderer, particles;
+
+function init3D() {
+    const canvas = document.getElementById('bg-canvas');
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const geometry = new THREE.BufferGeometry();
+    const vertices = [];
+    for (let i = 0; i < 5000; i++) {
+        vertices.push(THREE.MathUtils.randFloatSpread(2000));
+        vertices.push(THREE.MathUtils.randFloatSpread(2000));
+        vertices.push(THREE.MathUtils.randFloatSpread(2000));
+    }
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+
+    const material = new THREE.PointsMaterial({ color: 0x00e5ff, size: 2, transparent: true, opacity: 0.5 });
+    particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    camera.position.z = 1000;
+
+    animate3D();
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+}
+
+function animate3D() {
+    requestAnimationFrame(animate3D);
+    particles.rotation.x += 0.0005;
+    particles.rotation.y += 0.0005;
+    renderer.render(scene, camera);
+}
+
+// ============================================================================
+//                          INTERATIVIDADE 3D EM MOBILE (não alterado)
+// ============================================================================
+let isMobile = /Mobi|Android/i.test(navigator.userAgent);
+if (isMobile && window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', (event) => {
+        const x = event.beta / 90;
+        const y = event.gamma / 90;
+        document.body.style.transform = `rotateX(${x * 10}deg) rotateY(${y * 10}deg)`;
+    });
+}
+
+let startX, startY;
+document.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+});
+document.addEventListener('touchmove', (e) => {
+    const deltaX = e.touches[0].clientX - startX;
+    const deltaY = e.touches[0].clientY - startY;
+    document.body.style.transform = `rotateY(${deltaX / 10}deg) rotateX(${deltaY / 10}deg)`;
+});
+
+// ============================================================================
+//                          SISTEMA DE LOGIN/REGISTRO + FOTO DE PERFIL
+// ============================================================================
+function hashPass(pass) {
+    let hash = 0;
+    for (let i = 0; i < pass.length; i++) {
+        hash = ((hash << 5) - hash) + pass.charCodeAt(i);
+        hash |= 0;
+    }
+    return hash.toString();
+}
+
+function showMsg(id, text, success = false) {
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.className = `msg ${success ? 'success' : 'error'}`;
+    setTimeout(() => el.textContent = '', 5000);
+}
+
+function getUsers() {
+    try {
+        return JSON.parse(localStorage.getItem('users')) || {};
+    } catch (e) {
+        return {};
+    }
+}
+
+function saveUsers(users) {
+    try {
+        localStorage.setItem('users', JSON.stringify(users));
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+function login() {
+    const user = document.getElementById('user').value.trim();
+    const pass = hashPass(document.getElementById('pass').value);
+
+    if (!user || !pass) return showMsg('msg-login', 'Preencha os campos');
+
+    const users = getUsers();
+    if (users[user] === pass) {
+        localStorage.setItem('session', user);
+        showMsg('msg-login', 'Entrando...', true);
+        setTimeout(() => openPortal(user), 1000);
+    } else {
+        showMsg('msg-login', 'Dados incorretos');
+    }
+}
+
+function register() {
+    const user = document.getElementById('reg-user').value.trim();
+    const passRaw = document.getElementById('reg-pass').value;
+    const pass = hashPass(passRaw);
+
+    if (user.length < 3) return showMsg('msg-reg', 'Usuário mínimo 3 caracteres');
+    if (passRaw.length < 4) return showMsg('msg-reg', 'Senha mínima 4 caracteres');
+
+    const users = getUsers();
+    if (users[user]) return showMsg('msg-reg', 'Usuário já existe');
+
+    users[user] = pass;
+    if (saveUsers(users)) {
+        showMsg('msg-reg', 'Conta criada! Faça login', true);
+        setTimeout(() => {
+            document.getElementById('registro').classList.add('hidden');
+            document.getElementById('login').classList.remove('hidden');
+        }, 1500);
+    } else {
+        showMsg('msg-reg', 'Erro ao salvar');
+    }
+}
+
+function openPortal(user) {
+    document.getElementById('login').classList.add('hidden');
+    document.getElementById('registro').classList.add('hidden');
+    document.getElementById('portal').classList.remove('hidden');
+    document.getElementById('nome').textContent = user;
+    document.getElementById('logout').style.display = 'inline-block';
+    loadUserPhoto(user);
+}
+
+function logout() {
+    localStorage.removeItem('session');
+    location.reload();
+}
+
+function checkSession() {
+    const session = localStorage.getItem('session');
+    if (session && getUsers()[session]) openPortal(session);
+}
+
+function loadUserPhoto(user) {
+    const photo = localStorage.getItem(`photo_${user}`);
+    const avatar = document.getElementById('user-avatar');
+    if (photo) {
+        avatar.src = photo;
+        avatar.style.display = 'block';
+    } else {
+        avatar.style.display = 'none';
+    }
+}
+
+document.getElementById('foto-input').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const base64 = ev.target.result;
+            const user = localStorage.getItem('session');
+            localStorage.setItem(`photo_${user}`, base64);
+            document.getElementById('user-avatar').src = base64;
+            document.getElementById('user-avatar').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// ============================================================================
+//                          JOGOS E FUNCIONALIDADES (não alterado)
+// ============================================================================
+let currentSec = '';
+let secretNum = 0;
+let guessTries = 0;
+let tttBoard = Array(9).fill('');
+let hangmanWord = '';
+let hangmanGuesses = [];
+let hangmanErrors = 0;
+const hangmanWords = ['javascript', 'programacao', 'criativo', 'youtube', 'instagram', 'tiktok', 'musica', 'viagem', 'tecnologia', 'amor', 'felicidade', 'sucesso', 'motivacao', 'inspiracao', 'conteudo', 'viral', 'trending', 'brasil', 'digital', 'criador', 'inovacao', 'design', 'arte', 'fotografia', 'video'];
+
+function random(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function ytID(url) {
+    const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*)/);
+    return match && match[2].length === 11 ? match[2] : null;
+}
+
+function showSection(sec) {
+    currentSec = sec;
+    const area = document.getElementById('conteudo');
+    let content = `<h3>${sec}</h3>`;
+
+    if (sec === 'Baixar MP3 YouTube') {
+        content += `
+            <p>URL do vídeo YouTube (abre y2mate):</p>
+            <p style="color:#ff5555;"><strong>Aviso: Apenas conteúdos livres!</strong></p>
+            <input id="yt-url" placeholder="https://youtube.com/...">
+            <button onclick="downloadMP3()">Abrir Downloader</button>`;
+    } else if (sec === 'Pedra Papel Tesoura') {
+        content += `
+            <p>Desafie o PC!</p>
+            <div style="display:flex;justify-content:center;gap:10px;margin:20px 0;">
+                <button onclick="playRPS('pedra')">✊</button>
+                <button onclick="playRPS('papel')">✋</button>
+                <button onclick="playRPS('tesoura')">✂️</button>
+            </div>
+            <div id="rps-res"></div>`;
+    } else if (sec === 'Jogo da Velha') {
+        tttBoard = Array(9).fill('');
+        content += `
+            <p>Você é ❌, PC é ⭕</p>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:320px;margin:20px auto;">
+                ${Array(9).fill(0).map((_, i) => `<div class="cell" id="ttt-${i}" onclick="tttMove(${i})"></div>`).join('')}
+            </div>
+            <div id="ttt-res"></div>
+            <button onclick="tttReset()">Novo</button>`;
+    } else if (sec === 'Adivinhe o Número') {
+        secretNum = Math.floor(Math.random() * 100) + 1;
+        guessTries = 0;
+        content += `
+            <p>Número entre 1-100</p>
+            <input id="guess-in" type="number" min="1" max="100">
+            <button onclick="guessNum()">Adivinhar</button>
+            <div id="guess-res"></div>
+            <button onclick="newGuess()">Novo</button>`;
+    } else if (sec === 'Jogo da Forca') {
+        hangmanWord = random(hangmanWords).toUpperCase();
+        hangmanGuesses = [];
+        hangmanErrors = 0;
+        content += `
+            <p>Adivinhe a palavra!</p>
+            <div id="hang-word">${getHangDisplay()}</div>
+            <p>Erradas: <span id="hang-err"></span></p>
+            <p>Restantes: <span id="hang-left">6</span></p>
+            <input id="hang-in" maxlength="1" placeholder="Letra">
+            <button onclick="hangGuess()">Adivinhar</button>
+            <button onclick="showSection('Jogo da Forca')">Novo</button>
+            <div id="hang-res"></div>`;
+    } else {
+        content += `
+            <label for="tema">Tema:</label>
+            <input id="tema" placeholder="Ex: viagens, tech...">
+            <button onclick="genContent()">Gerar</button>
+            <div id="output"></div>`;
+    }
+
+    area.innerHTML = content;
+}
+
+function downloadMP3() {
+    const url = document.getElementById('yt-url').value.trim();
+    const id = ytID(url);
+    if (id) window.open(`https://www.y2mate.com/youtube-mp3/${id}`, '_blank');
+    else alert('URL inválida!');
+}
+
+function playRPS(choice) {
+    const choices = ['pedra', 'papel', 'tesoura'];
+    const pc = random(choices);
+    let res = choice === pc ? 'Empate!' : 
+              (choice === 'pedra' && pc === 'tesoura') || (choice === 'papel' && pc === 'pedra') || (choice === 'tesoura' && pc === 'papel') ? 'Você ganhou!' : 'Você perdeu!';
+    document.getElementById('rps-res').innerHTML = `<p>${res} (PC: ${pc})</p>`;
+}
+
+function tttMove(i) {
+    if (tttBoard[i] || tttCheckWin()) return;
+    tttBoard[i] = 'X';
+    document.getElementById(`ttt-${i}`).textContent = '❌';
+    if (tttCheckWin()) return document.getElementById('ttt-res').textContent = 'Você ganhou!';
+    if (tttBoard.every(c => c)) return document.getElementById('ttt-res').textContent = 'Empate!';
+    tttPcMove();
+}
+
+function tttPcMove() {
+    let i = Math.floor(Math.random() * 9);
+    while (tttBoard[i]) i = Math.floor(Math.random() * 9);
+    tttBoard[i] = 'O';
+    document.getElementById(`ttt-${i}`).textContent = '⭕';
+    if (tttCheckWin()) document.getElementById('ttt-res').textContent = 'PC ganhou!';
+    else if (tttBoard.every(c => c)) document.getElementById('ttt-res').textContent = 'Empate!';
+}
+
+function tttCheckWin() {
+    const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    return wins.some(w => w.every(j => tttBoard[j] === tttBoard[w[0]] && tttBoard[j]));
+}
+
+function tttReset() {
+    tttBoard = Array(9).fill('');
+    Array.from(document.querySelectorAll('.cell')).forEach(c => c.textContent = '');
+    document.getElementById('ttt-res').textContent = '';
+}
+
+function guessNum() {
+    const guess = parseInt(document.getElementById('guess-in').value);
+    guessTries++;
+    let msg = isNaN(guess) || guess < 1 || guess > 100 ? 'Inválido!' :
+              guess < secretNum ? 'Baixo!' : guess > secretNum ? 'Alto!' : `Acertou em ${guessTries} tentativas!`;
+    document.getElementById('guess-res').innerHTML = `<p>${msg}</p>`;
+}
+
+function newGuess() {
+    secretNum = Math.floor(Math.random() * 100) + 1;
+    guessTries = 0;
+    document.getElementById('guess-in').value = '';
+    document.getElementById('guess-res').innerHTML = '';
+}
+
+function getHangDisplay() {
+    return hangmanWord.split('').map(l => hangmanGuesses.includes(l) ? l : '_').join(' ');
+}
+
+function hangGuess() {
+    const l = document.getElementById('hang-in').value.toUpperCase();
+    document.getElementById('hang-in').value = '';
+    if (!l || hangmanGuesses.includes(l) || hangmanErrors >= 6 || !/[A-Z]/.test(l)) return;
+
+    hangmanGuesses.push(l);
+    if (!hangmanWord.includes(l)) {
+        hangmanErrors++;
+        document.getElementById('hang-err').textContent = hangmanGuesses.filter(g => !hangmanWord.includes(g)).join(', ');
+        document.getElementById('hang-left').textContent = 6 - hangmanErrors;
+    }
+
+    document.getElementById('hang-word').textContent = getHangDisplay();
+
+    if (hangmanWord.split('').every(g => hangmanGuesses.includes(g))) {
+        document.getElementById('hang-res').textContent = 'Ganhou! Palavra: ' + hangmanWord;
+    } else if (hangmanErrors >= 6) {
+        document.getElementById('hang-res').textContent = 'Perdeu! Palavra: ' + hangmanWord;
+    }
+}
+
+function genContent() {
+    let tema = document.getElementById('tema')?.value.trim() || 'criatividade';
+    const out = document.getElementById('output');
+    let res = '';
+
+    const tipos = [
+        "Top 20", "Tutorial definitivo", "Review completo", "Minha jornada com", "Como dominar",
+        "Dicas avançadas para", "Os melhores ferramentas de", "Desafio de 90 dias", "Segredos que ninguém revela sobre",
+        "Vlog diário sobre", "Erros fatais em", "Comparação épica", "Rotina produtiva com", "Mitos vs realidade sobre",
+        "Como criar em casa", "Tendências 2026 de", "Como mudou minha vida", "Unboxing premium de", "Projetos DIY incríveis para",
+        "Receitas saudáveis com", "Viagens dos sonhos inspiradas em", "Transformação completa com", "Antes e depois chocante de",
+        "Como economizar muito em", "Previsões bombásticas para", "Reação sincera a", "Paródia hilária de", "Colab ideias sobre",
+        "Q&A completo sobre", "Behind the scenes real de", "Um dia intenso com", "Benefícios científicos de", "Como evitar armadilhas em",
+        "Ranking definitivo de", "História completa de", "Fatos impressionantes sobre", "Challenge extremo com", "Tour virtual por",
+        "Testando gadgets de", "Life hacks geniais para", "Série exclusiva sobre", "Novidades quentes em", "Minha opinião polêmica sobre",
+        "Análise profunda de", "Estratégias profissionais para", "Como crescer rápido no nicho de", "Casos reais de sucesso em",
+        "Ferramentas essenciais para", "Ideias baratas e eficazes para", "Motivação diária para", "Os piores produtos de",
+        "Melhor vs pior de", "Guia absoluto para", "Segredos dos tops sobre", "Como eu alcancei resultados com", "Teste de 7 dias de",
+        "Recomendações premium de", "Lista gigante de", "Passo a passo detalhado para", "Entrevista fictícia com especialista em",
+        "Resenha honesta de", "Comparação lado a lado", "Tutorial master de", "Desafio insano de", "24 horas vivendo",
+        "Transformação radical com", "Os mais virais sobre", "Memes engraçados de", "Dicas secretas de experts em",
+        "Rotina matinal com", "Como ganhar dinheiro com", "Os maiores mitos sobre", "Como começar do zero em", "Evolução de",
+        "Inovações disruptivas em", "Casos de estudo sobre", "Ferramentas gratuitas para", "Desafios semanais de", "Histórias inspiradoras de",
+        "Como otimizar seu workflow com", "Os melhores apps para", "Guia para iniciantes em", "Técnicas avançadas de", "Impacto social de"
+    ];
+
+    switch (currentSec) {
+        case 'Ideias de conteúdo':
+            res = `<strong>2000+ ideias para "${tema}":</strong><ul>`;
+            for (let i = 0; i < 2000; i++) {
+                res += `<li>${i+1}. ${random(tipos)} ${tema} – dicas, exemplos e estratégias</li>`;
+            }
+            res += '</ul>';
+            break;
+        case 'Roteiro de vídeo':
+            res = `<pre>Roteiro para "${tema}":
+
+Intro (0:00-0:30): Gancho sobre ${tema}.
+Corpo: Pontos chave com exemplos.
+Conclusão: Resumo e CTA.</pre>`;
+            break;
+        case 'Estrutura de música':
+            res = `<pre>Estrutura para "${tema}":
+
+Intro: Melodia suave.
+Verso 1: Descrição.
+Refrão: Gancho.
+...</pre>`;
+            break;
+        case 'Prompt para IA':
+            res = `<pre>Prompts para "${tema}":
+
+1. Gere história sobre ${tema}.
+2. Plano de negócios para ${tema}.
+...</pre>`;
+            break;
+        case 'Títulos YouTube':
+            res = `<pre>50 Títulos para "${tema}":
+
+1. Como Dominar ${tema}!
+...</pre>`;
+            break;
+        case 'Descrições YouTube':
+            res = `<pre>Descrição para "${tema}":
+
+Explore ${tema}! Capítulos: ...
+Hashtags: #${tema}</pre>`;
+            break;
+        case 'Hashtags':
+            res = `<pre>50 Hashtags para "${tema}":
+
+#${tema} #Dicas${tema} ...</pre>`;
+            break;
+        case 'Ideias Thumbnail':
+            res = `<pre>10 Ideias para "${tema}":
+
+1. Fundo neon com texto.
+...</pre>`;
+            break;
+        case 'Letras de música':
+            res = `<pre>Letras sobre "${tema}":
+
+[Verso] No mundo de ${tema}...
+[Refrão] ${tema} é vida!</pre>`;
+            break;
+        default:
+            res = '<p>Em desenvolvimento 🚀</p>';
+    }
+
+    out.innerHTML = res;
+}
+
+// ============================================================================
+//                          INICIALIZAÇÃO
+// ============================================================================
+document.addEventListener('DOMContentLoaded', () => {
+    init3D();
+    checkSession();
+
+    let theme = localStorage.getItem('theme') || 'dark';
+    if (theme === 'light') {
+        document.body.classList.add('light');
+        document.getElementById('theme').textContent = '☀️';
+    } else {
+        document.getElementById('theme').textContent = '🌙';
+    }
+
+    document.getElementById('theme').onclick = () => {
+        document.body.classList.toggle('light');
+        theme = document.body.classList.contains('light') ? 'light' : 'dark';
+        localStorage.setItem('theme', theme);
+        document.getElementById('theme').textContent = theme === 'light' ? '☀️' : '🌙';
+        particles.material.color.set(theme === 'light' ? 0x5e00e0 : 0x00e5ff);
+    };
+
+    document.getElementById('entrar').onclick = login;
+    document.getElementById('cadastrar').onclick = register;
+
+    document.getElementById('ir-registro').onclick = (e) => {
+        e.preventDefault();
+        document.getElementById('login').classList.add('hidden');
+        document.getElementById('registro').classList.remove('hidden');
+    };
+
+    document.getElementById('ir-login').onclick = (e) => {
+        e.preventDefault();
+        document.getElementById('registro').classList.add('hidden');
+        document.getElementById('login').classList.remove('hidden');
+    };
+
+    document.getElementById('logout').onclick = logout;
+
+    document.querySelectorAll('.menu > div').forEach(div => {
+        div.onclick = () => showSection(div.dataset.sec);
+    });
+});
+</script>
 </body>
 </html>
