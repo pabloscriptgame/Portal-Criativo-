@@ -12,7 +12,7 @@
 
 <script>
 // ============================================================================
-//                          ESTILO (CSS) - tudo aqui dentro
+//                          ESTILO (CSS) - tudo aqui dentro, modernizado
 // ============================================================================
 const styles = `
     :root {
@@ -39,7 +39,7 @@ const styles = `
         --border: rgba(0,0,0,0.08);
     }
 
-    * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif; }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui, -apple-system, sans-serif; }
     body {
         background:var(--bg);
         color:var(--text);
@@ -53,35 +53,59 @@ const styles = `
     header {
         position: fixed;
         top: 0; left: 0; right: 0;
-        height: 54px;
+        height: 48px; /* Mais fino ainda, moderno e elegante */
         background: var(--header);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 20px;
+        padding: 0 16px;
         z-index: 1000;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        box-shadow: 0 2px 16px rgba(0,0,0,0.3);
         border-bottom: 1px solid var(--border);
+        transition: all 0.3s ease;
     }
 
-    header b { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px; }
+    header:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+
+    header b { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.4px; }
+
+    header .user-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    header #user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid var(--primary);
+        box-shadow: var(--glow);
+        cursor: pointer;
+        object-fit: cover;
+        transition: all 0.3s;
+    }
+
+    header #user-avatar:hover { transform: scale(1.1); }
+
     header button {
         background: linear-gradient(135deg, var(--primary), var(--primary2));
         border: none;
         color: white;
-        padding: 8px 18px;
+        padding: 6px 16px;
         border-radius: 999px;
         font-weight: 600;
         cursor: pointer;
         box-shadow: var(--glow);
         transition: all 0.3s;
+        font-size: 0.95rem;
     }
     header button:hover { transform: translateY(-2px) scale(1.04); }
 
     main {
-        padding: 80px 20px 40px;
+        padding: 64px 16px 32px; /* Ajustado para header mais fino */
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -120,6 +144,8 @@ const styles = `
         font-size: 1.05rem;
         transition: all 0.3s;
     }
+
+    input[type="file"] { padding: 10px; }
 
     input:focus {
         outline: none;
@@ -190,11 +216,13 @@ const styles = `
     .cell:hover { background:rgba(0,229,255,0.2); transform: scale(1.05); }
 
     @media (max-width: 600px) {
-        header { height: 50px; padding: 0 16px; }
-        header b { font-size: 1.1rem; }
-        main { padding: 70px 16px 30px; }
+        header { height: 44px; padding: 0 12px; }
+        header b { font-size: 1.05rem; }
+        main { padding: 56px 12px 24px; }
         .card, .area { padding: 24px 18px; }
         .menu { grid-template-columns: 1fr; }
+        header button { padding: 5px 14px; font-size: 0.9rem; }
+        header #user-avatar { width: 28px; height: 28px; }
     }
 
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -210,7 +238,9 @@ const htmlContent = `
 
 <header>
     <b>🚀 Portal Criativo Ultimate 3D</b>
-    <div>
+    <div class="user-info">
+        <img id="user-avatar" src="" alt="Avatar" style="display:none;" onclick="document.getElementById('foto-input').click();">
+        <input type="file" id="foto-input" accept="image/*" style="display:none;">
         <button id="logout" style="display:none;">Sair</button>
         <button id="theme">🌙</button>
     </div>
@@ -282,7 +312,7 @@ document.head.appendChild(styleElem);
 document.body.insertAdjacentHTML('beforeend', htmlContent);
 
 // ============================================================================
-//                          FUNDO 3D COM THREE.JS
+//                          FUNDO 3D COM THREE.JS (não alterado)
 // ============================================================================
 let scene, camera, renderer, particles;
 
@@ -324,7 +354,7 @@ function animate3D() {
 }
 
 // ============================================================================
-//                          INTERATIVIDADE 3D EM MOBILE
+//                          INTERATIVIDADE 3D EM MOBILE (não alterado)
 // ============================================================================
 let isMobile = /Mobi|Android/i.test(navigator.userAgent);
 if (isMobile && window.DeviceOrientationEvent) {
@@ -347,7 +377,7 @@ document.addEventListener('touchmove', (e) => {
 });
 
 // ============================================================================
-//                          SISTEMA DE LOGIN/REGISTRO
+//                          SISTEMA DE LOGIN/REGISTRO + FOTO DE PERFIL
 // ============================================================================
 function hashPass(pass) {
     let hash = 0;
@@ -427,6 +457,7 @@ function openPortal(user) {
     document.getElementById('portal').classList.remove('hidden');
     document.getElementById('nome').textContent = user;
     document.getElementById('logout').style.display = 'inline-block';
+    loadUserPhoto(user);
 }
 
 function logout() {
@@ -439,8 +470,34 @@ function checkSession() {
     if (session && getUsers()[session]) openPortal(session);
 }
 
+function loadUserPhoto(user) {
+    const photo = localStorage.getItem(`photo_${user}`);
+    const avatar = document.getElementById('user-avatar');
+    if (photo) {
+        avatar.src = photo;
+        avatar.style.display = 'block';
+    } else {
+        avatar.style.display = 'none';
+    }
+}
+
+document.getElementById('foto-input').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const base64 = ev.target.result;
+            const user = localStorage.getItem('session');
+            localStorage.setItem(`photo_${user}`, base64);
+            document.getElementById('user-avatar').src = base64;
+            document.getElementById('user-avatar').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
 // ============================================================================
-//                          JOGOS E FUNCIONALIDADES
+//                          JOGOS E FUNCIONALIDADES (não alterado)
 // ============================================================================
 let currentSec = '';
 let secretNum = 0;
