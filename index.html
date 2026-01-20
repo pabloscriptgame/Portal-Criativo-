@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Portal Criativo Ultimate 3D • PabloDesigner</title>
+    <title>Portal AI Magnífico 3D • PabloDesigner</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
@@ -53,7 +53,7 @@ const styles = `
     header {
         position: fixed;
         top: 0; left: 0; right: 0;
-        height: 48px; /* Mais fino ainda, moderno e elegante */
+        height: 48px;
         background: var(--header);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
@@ -105,7 +105,7 @@ const styles = `
     header button:hover { transform: translateY(-2px) scale(1.04); }
 
     main {
-        padding: 64px 16px 32px; /* Ajustado para header mais fino */
+        padding: 64px 16px 32px;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -208,12 +208,74 @@ const styles = `
         text-align: center;
     }
     .success { color: #00ffaa; }
-    .error   { color: #ff5555; }
+    .error { color: #ff5555; }
 
     pre { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; overflow-x: auto; white-space: pre-wrap; }
 
     .cell { width:100px; height:100px; background:rgba(255,255,255,0.1); border-radius:12px; font-size:2.5em; display:flex; align-items:center; justify-content:center; cursor:pointer; margin:5px; transition: all 0.3s; }
     .cell:hover { background:rgba(0,229,255,0.2); transform: scale(1.05); }
+
+    #chat-container {
+        width: 100%;
+        max-width: 800px;
+        height: calc(100vh - 100px);
+        display: flex;
+        flex-direction: column;
+        background: var(--card);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    #messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .message {
+        max-width: 80%;
+        padding: 12px 18px;
+        border-radius: 18px;
+        line-height: 1.4;
+        word-wrap: break-word;
+    }
+
+    .user-message {
+        align-self: flex-end;
+        background: linear-gradient(135deg, var(--primary), var(--primary2));
+        color: white;
+    }
+
+    .bot-message {
+        align-self: flex-start;
+        background: var(--input);
+        color: var(--text);
+    }
+
+    #chat-form {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid var(--border);
+    }
+
+    #chat-input {
+        flex: 1;
+        margin: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    #chat-send {
+        width: auto;
+        padding: 14px 24px;
+        margin: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
 
     @media (max-width: 600px) {
         header { height: 44px; padding: 0 12px; }
@@ -237,7 +299,7 @@ const htmlContent = `
 </div>
 
 <header>
-    <b>🚀 Portal Criativo Ultimate 3D</b>
+    <b>🚀 Portal AI Magnífico 3D</b>
     <div class="user-info">
         <img id="user-avatar" src="" alt="Avatar" style="display:none;" onclick="document.getElementById('foto-input').click();">
         <input type="file" id="foto-input" accept="image/*" style="display:none;">
@@ -248,7 +310,8 @@ const htmlContent = `
 
 <main>
 
-    <div id="login" class="card">
+    <!-- Elementos ocultos -->
+    <div id="login" class="card hidden">
         <img src="https://i.ibb.co/Ld9hbLY/redondo-logo-pablodesigner-Photoroom.png" class="logo" alt="Logo">
         <h2>Entrar</h2>
         <input id="user" placeholder="Usuário" autocomplete="username">
@@ -274,29 +337,21 @@ const htmlContent = `
 
     <div id="portal" class="hidden">
         <h2 style="margin:0 0 40px;">Bem-vindo, <span id="nome"></span> 👋</h2>
-
-        <div class="menu">
-            <div data-sec="Ideias de conteúdo">💡 Ideias de Conteúdo (2000+)</div>
-            <div data-sec="Roteiro de vídeo">🎬 Roteiro Completo de Vídeo</div>
-            <div data-sec="Estrutura de música">🎵 Estrutura Detalhada de Música</div>
-            <div data-sec="Prompt para IA">🤖 Prompts Avançados para IA</div>
-            <div data-sec="Títulos YouTube">📹 Títulos Virais YouTube</div>
-            <div data-sec="Descrições YouTube">📝 Descrições Completas YouTube</div>
-            <div data-sec="Hashtags">🏷️ Pacotes de Hashtags</div>
-            <div data-sec="Ideias Thumbnail">🖼️ Ideias Detalhadas Thumbnail</div>
-            <div data-sec="Letras de música">🎤 Letras Completas de Música</div>
-            <div data-sec="Baixar MP3 YouTube">🔊 Baixar MP3 YouTube</div>
-            <div data-sec="Pedra Papel Tesoura">✊✋✂️ Pedra Papel Tesoura</div>
-            <div data-sec="Jogo da Velha">❌⭕ Jogo da Velha</div>
-            <div data-sec="Adivinhe o Número">🔢 Adivinhe o Número</div>
-            <div data-sec="Jogo da Forca">🔤 Jogo da Forca</div>
+        <div class="menu hidden">
+            <!-- Menus ocultos, mas funções acessíveis via chat -->
         </div>
-
-        <div id="conteudo" class="area">
-            <p style="text-align:center;padding:140px 0;font-size:1.4rem;opacity:0.7;">
-                Escolha uma das muitas opções acima para começar a criar! 🚀
-            </p>
+        <div id="conteudo" class="area hidden">
+            <!-- Conteúdo gerado será usado no chat -->
         </div>
+    </div>
+
+    <!-- Chat Principal - AI Magnífico como Grok -->
+    <div id="chat-container">
+        <div id="messages"></div>
+        <form id="chat-form" onsubmit="sendMessage(event)">
+            <input id="chat-input" placeholder="Digite sua mensagem..." autocomplete="off" autofocus>
+            <button id="chat-send" type="submit">Enviar</button>
+        </form>
     </div>
 
 </main>
@@ -455,349 +510,192 @@ function openPortal(user) {
     document.getElementById('login').classList.add('hidden');
     document.getElementById('registro').classList.add('hidden');
     document.getElementById('portal').classList.remove('hidden');
-    document.getElementById('nome').textContent = user;
-    document.getElementById('logout').style.display = 'inline-block';
-    loadUserPhoto(user);
+    document.getElementById('userName').textContent = user;
+    document.getElementById('logoutBtn').style.display = "block";
 }
 
 function logout() {
-    localStorage.removeItem('session');
+    localStorage.removeItem("session");
     location.reload();
 }
 
 function checkSession() {
-    const session = localStorage.getItem('session');
-    if (session && getUsers()[session]) openPortal(session);
-}
+    const session = localStorage.getItem("session");
+    if (!session) return;
 
-function loadUserPhoto(user) {
-    const photo = localStorage.getItem(`photo_${user}`);
-    const avatar = document.getElementById('user-avatar');
-    if (photo) {
-        avatar.src = photo;
-        avatar.style.display = 'block';
+    const users = getUsers();
+    if (users[session]) {
+        openPortal(session);
     } else {
-        avatar.style.display = 'none';
+        localStorage.removeItem("session");
     }
 }
 
-document.getElementById('foto-input').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            const base64 = ev.target.result;
-            const user = localStorage.getItem('session');
-            localStorage.setItem(`photo_${user}`, base64);
-            document.getElementById('user-avatar').src = base64;
-            document.getElementById('user-avatar').style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
 // ============================================================================
-//                          JOGOS E FUNCIONALIDADES (não alterado)
+//                          JOGOS E FUNCIONALIDADES
 // ============================================================================
-let currentSec = '';
-let secretNum = 0;
-let guessTries = 0;
+let secretNumber = 0;
+let guessAttempts = 0;
 let tttBoard = Array(9).fill('');
 let hangmanWord = '';
-let hangmanGuesses = [];
-let hangmanErrors = 0;
-const hangmanWords = ['javascript', 'programacao', 'criativo', 'youtube', 'instagram', 'tiktok', 'musica', 'viagem', 'tecnologia', 'amor', 'felicidade', 'sucesso', 'motivacao', 'inspiracao', 'conteudo', 'viral', 'trending', 'brasil', 'digital', 'criador', 'inovacao', 'design', 'arte', 'fotografia', 'video'];
+let hangmanGuessed = [];
+let hangmanWrong = 0;
+const hangmanWords = ['javascript', 'programacao', 'criativo', 'youtube', 'instagram', 'tiktok', 'musica', 'viagem', 'tecnologia', 'amor', 'felicidade', 'sucesso', 'motivacao', 'inspiracao', 'conteudo', 'viral', 'trending', 'brasil', 'digital', 'criador'];
 
-function random(arr) {
+function randomChoice(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function ytID(url) {
-    const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*)/);
-    return match && match[2].length === 11 ? match[2] : null;
+function extractYouTubeID(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*)/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
 }
 
-function showSection(sec) {
-    currentSec = sec;
-    const area = document.getElementById('conteudo');
-    let content = `<h3>${sec}</h3>`;
+let currentSection = '';
 
-    if (sec === 'Baixar MP3 YouTube') {
-        content += `
-            <p>URL do vídeo YouTube (abre y2mate):</p>
-            <p style="color:#ff5555;"><strong>Aviso: Apenas conteúdos livres!</strong></p>
-            <input id="yt-url" placeholder="https://youtube.com/...">
-            <button onclick="downloadMP3()">Abrir Downloader</button>`;
-    } else if (sec === 'Pedra Papel Tesoura') {
-        content += `
-            <p>Desafie o PC!</p>
-            <div style="display:flex;justify-content:center;gap:10px;margin:20px 0;">
-                <button onclick="playRPS('pedra')">✊</button>
-                <button onclick="playRPS('papel')">✋</button>
-                <button onclick="playRPS('tesoura')">✂️</button>
+function showSection(section) {
+    currentSection = section;
+    const area = document.getElementById("area");
+    let html = `<h3>${section}</h3>`;
+
+    if (section === 'Baixar MP3 YouTube') {
+        html += `
+            <p>Insira a URL do vídeo do YouTube para abrir o downloader externo (y2mate).</p>
+            <p style="color:#ff6b6b;"><strong>Aviso importante: Use apenas para conteúdos sem direitos autorais ou com permissão explícita!</strong></p>
+            <input id="inputSpecial" placeholder="https://www.youtube.com/watch?v=..." style="margin:15px 0;">
+            <button onclick="specialAction()">Abrir Downloader MP3</button>`;
+    } else if (section === 'Pedra Papel Tesoura') {
+        html += `
+            <p>Desafie o computador neste clássico!</p>
+            <div style="text-align:center; margin:40px 0;">
+                <button onclick="playRPS('pedra')" style="width:auto; margin:15px; font-size:1.8em; padding:20px 40px;">✊ Pedra</button>
+                <button onclick="playRPS('papel')" style="width:auto; margin:15px; font-size:1.8em; padding:20px 40px;">✋ Papel</button>
+                <button onclick="playRPS('tesoura')" style="width:auto; margin:15px; font-size:1.8em; padding:20px 40px;">✂️ Tesoura</button>
             </div>
-            <div id="rps-res"></div>`;
-    } else if (sec === 'Jogo da Velha') {
+            <div id="rpsResult" style="font-size:1.5em; margin-top:40px;"></div>`;
+    } else if (section === 'Jogo da Velha') {
         tttBoard = Array(9).fill('');
-        content += `
-            <p>Você é ❌, PC é ⭕</p>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:320px;margin:20px auto;">
-                ${Array(9).fill(0).map((_, i) => `<div class="cell" id="ttt-${i}" onclick="tttMove(${i})"></div>`).join('')}
+        html += `
+            <p>Jogue contra o computador (você é ❌, computador ⭕)</p>
+            <div style="display:grid; grid-template-columns:repeat(3,120px); gap:14px; width:380px; margin:50px auto;">
+                ${Array(9).fill(0).map((_,i) => `<div class="cell" id="cell${i}" onclick="playerMove(${i})"></div>`).join('')}
             </div>
-            <div id="ttt-res"></div>
-            <button onclick="tttReset()">Novo</button>`;
-    } else if (sec === 'Adivinhe o Número') {
-        secretNum = Math.floor(Math.random() * 100) + 1;
-        guessTries = 0;
-        content += `
-            <p>Número entre 1-100</p>
-            <input id="guess-in" type="number" min="1" max="100">
-            <button onclick="guessNum()">Adivinhar</button>
-            <div id="guess-res"></div>
-            <button onclick="newGuess()">Novo</button>`;
-    } else if (sec === 'Jogo da Forca') {
-        hangmanWord = random(hangmanWords).toUpperCase();
-        hangmanGuesses = [];
-        hangmanErrors = 0;
-        content += `
-            <p>Adivinhe a palavra!</p>
-            <div id="hang-word">${getHangDisplay()}</div>
-            <p>Erradas: <span id="hang-err"></span></p>
-            <p>Restantes: <span id="hang-left">6</span></p>
-            <input id="hang-in" maxlength="1" placeholder="Letra">
-            <button onclick="hangGuess()">Adivinhar</button>
-            <button onclick="showSection('Jogo da Forca')">Novo</button>
-            <div id="hang-res"></div>`;
+            <div id="tttResult" style="text-align:center; margin:40px 0; font-size:1.6em;"></div>
+            <button onclick="resetTTT()">Novo Jogo</button>`;
+    } else if (section === 'Adivinhe o Número') {
+        secretNumber = Math.floor(Math.random() * 100) + 1;
+        guessAttempts = 0;
+        html += `
+            <p>Escolhi um número entre 1 e 100. Quantas tentativas você precisa?</p>
+            <input id="guessInput" type="number" min="1" max="100" placeholder="Seu palpite">
+            <button onclick="guessNumber()">Adivinhar</button>
+            <div id="guessResult" style="margin-top:40px; line-height:1.8;"></div>
+            <button onclick="newGuessGame()" style="margin-top:30px;">Novo Jogo</button>`;
+    } else if (section === 'Jogo da Forca') {
+        hangmanWord = randomChoice(hangmanWords).toUpperCase();
+        hangmanGuessed = [];
+        hangmanWrong = 0;
+        html += `
+            <p>Adivinhe a palavra! Tema: Palavras comuns da criação de conteúdo</p>
+            <div class="hangman-display" id="hangmanWord">${getHangmanDisplay()}</div>
+            <p>Letras erradas: <span id="wrongLetters"></span></p>
+            <p>Tentativas restantes: <span id="attemptsLeft">6</span></p>
+            <input id="letterInput" maxlength="1" placeholder="Digite uma letra" style="width:200px; text-transform:uppercase;">
+            <button onclick="guessLetter()">Adivinhar Letra</button>
+            <button onclick="showSection('Jogo da Forca')" style="margin-top:20px;">Novo Jogo</button>
+            <div id="hangmanResult" style="margin-top:30px; font-size:1.4em;"></div>`;
     } else {
-        content += `
-            <label for="tema">Tema:</label>
-            <input id="tema" placeholder="Ex: viagens, tech...">
-            <button onclick="genContent()">Gerar</button>
-            <div id="output"></div>`;
+        html += `
+            <label for="inputTema">Tema / palavra-chave (obrigatório para melhores resultados):</label>
+            <input id="inputTema" placeholder="Ex: viagens, tecnologia, amor, motivação, fitness...">
+            <button onclick="generateContent()">Gerar Conteúdo Completo</button>
+            <div id="output" style="margin-top:40px;"></div>`;
     }
 
-    area.innerHTML = content;
-}
+    area.innerHTML = html;
 
-function downloadMP3() {
-    const url = document.getElementById('yt-url').value.trim();
-    const id = ytID(url);
-    if (id) window.open(`https://www.y2mate.com/youtube-mp3/${id}`, '_blank');
-    else alert('URL inválida!');
-}
-
-function playRPS(choice) {
-    const choices = ['pedra', 'papel', 'tesoura'];
-    const pc = random(choices);
-    let res = choice === pc ? 'Empate!' : 
-              (choice === 'pedra' && pc === 'tesoura') || (choice === 'papel' && pc === 'pedra') || (choice === 'tesoura' && pc === 'papel') ? 'Você ganhou!' : 'Você perdeu!';
-    document.getElementById('rps-res').innerHTML = `<p>${res} (PC: ${pc})</p>`;
-}
-
-function tttMove(i) {
-    if (tttBoard[i] || tttCheckWin()) return;
-    tttBoard[i] = 'X';
-    document.getElementById(`ttt-${i}`).textContent = '❌';
-    if (tttCheckWin()) return document.getElementById('ttt-res').textContent = 'Você ganhou!';
-    if (tttBoard.every(c => c)) return document.getElementById('ttt-res').textContent = 'Empate!';
-    tttPcMove();
-}
-
-function tttPcMove() {
-    let i = Math.floor(Math.random() * 9);
-    while (tttBoard[i]) i = Math.floor(Math.random() * 9);
-    tttBoard[i] = 'O';
-    document.getElementById(`ttt-${i}`).textContent = '⭕';
-    if (tttCheckWin()) document.getElementById('ttt-res').textContent = 'PC ganhou!';
-    else if (tttBoard.every(c => c)) document.getElementById('ttt-res').textContent = 'Empate!';
-}
-
-function tttCheckWin() {
-    const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-    return wins.some(w => w.every(j => tttBoard[j] === tttBoard[w[0]] && tttBoard[j]));
-}
-
-function tttReset() {
-    tttBoard = Array(9).fill('');
-    Array.from(document.querySelectorAll('.cell')).forEach(c => c.textContent = '');
-    document.getElementById('ttt-res').textContent = '';
-}
-
-function guessNum() {
-    const guess = parseInt(document.getElementById('guess-in').value);
-    guessTries++;
-    let msg = isNaN(guess) || guess < 1 || guess > 100 ? 'Inválido!' :
-              guess < secretNum ? 'Baixo!' : guess > secretNum ? 'Alto!' : `Acertou em ${guessTries} tentativas!`;
-    document.getElementById('guess-res').innerHTML = `<p>${msg}</p>`;
-}
-
-function newGuess() {
-    secretNum = Math.floor(Math.random() * 100) + 1;
-    guessTries = 0;
-    document.getElementById('guess-in').value = '';
-    document.getElementById('guess-res').innerHTML = '';
-}
-
-function getHangDisplay() {
-    return hangmanWord.split('').map(l => hangmanGuesses.includes(l) ? l : '_').join(' ');
-}
-
-function hangGuess() {
-    const l = document.getElementById('hang-in').value.toUpperCase();
-    document.getElementById('hang-in').value = '';
-    if (!l || hangmanGuesses.includes(l) || hangmanErrors >= 6 || !/[A-Z]/.test(l)) return;
-
-    hangmanGuesses.push(l);
-    if (!hangmanWord.includes(l)) {
-        hangmanErrors++;
-        document.getElementById('hang-err').textContent = hangmanGuesses.filter(g => !hangmanWord.includes(g)).join(', ');
-        document.getElementById('hang-left').textContent = 6 - hangmanErrors;
-    }
-
-    document.getElementById('hang-word').textContent = getHangDisplay();
-
-    if (hangmanWord.split('').every(g => hangmanGuesses.includes(g))) {
-        document.getElementById('hang-res').textContent = 'Ganhou! Palavra: ' + hangmanWord;
-    } else if (hangmanErrors >= 6) {
-        document.getElementById('hang-res').textContent = 'Perdeu! Palavra: ' + hangmanWord;
+    if (document.getElementById("inputTema")) {
+        generateContent();
     }
 }
 
-function genContent() {
-    let tema = document.getElementById('tema')?.value.trim() || 'criatividade';
-    const out = document.getElementById('output');
-    let res = '';
+function generateContent() {
+    const input = document.getElementById("inputTema");
+    let tema = input ? input.value.trim() : '';
+    if (!tema) tema = 'criatividade e sucesso';
 
-    const tipos = [
-        "Top 20", "Tutorial definitivo", "Review completo", "Minha jornada com", "Como dominar",
-        "Dicas avançadas para", "Os melhores ferramentas de", "Desafio de 90 dias", "Segredos que ninguém revela sobre",
-        "Vlog diário sobre", "Erros fatais em", "Comparação épica", "Rotina produtiva com", "Mitos vs realidade sobre",
-        "Como criar em casa", "Tendências 2026 de", "Como mudou minha vida", "Unboxing premium de", "Projetos DIY incríveis para",
-        "Receitas saudáveis com", "Viagens dos sonhos inspiradas em", "Transformação completa com", "Antes e depois chocante de",
-        "Como economizar muito em", "Previsões bombásticas para", "Reação sincera a", "Paródia hilária de", "Colab ideias sobre",
-        "Q&A completo sobre", "Behind the scenes real de", "Um dia intenso com", "Benefícios científicos de", "Como evitar armadilhas em",
-        "Ranking definitivo de", "História completa de", "Fatos impressionantes sobre", "Challenge extremo com", "Tour virtual por",
-        "Testando gadgets de", "Life hacks geniais para", "Série exclusiva sobre", "Novidades quentes em", "Minha opinião polêmica sobre",
-        "Análise profunda de", "Estratégias profissionais para", "Como crescer rápido no nicho de", "Casos reais de sucesso em",
-        "Ferramentas essenciais para", "Ideias baratas e eficazes para", "Motivação diária para", "Os piores produtos de",
-        "Melhor vs pior de", "Guia absoluto para", "Segredos dos tops sobre", "Como eu alcancei resultados com", "Teste de 7 dias de",
-        "Recomendações premium de", "Lista gigante de", "Passo a passo detalhado para", "Entrevista fictícia com especialista em",
-        "Resenha honesta de", "Comparação lado a lado", "Tutorial master de", "Desafio insano de", "24 horas vivendo",
-        "Transformação radical com", "Os mais virais sobre", "Memes engraçados de", "Dicas secretas de experts em",
-        "Rotina matinal com", "Como ganhar dinheiro com", "Os maiores mitos sobre", "Como começar do zero em", "Evolução de",
-        "Inovações disruptivas em", "Casos de estudo sobre", "Ferramentas gratuitas para", "Desafios semanais de", "Histórias inspiradoras de",
-        "Como otimizar seu workflow com", "Os melhores apps para", "Guia para iniciantes em", "Técnicas avançadas de", "Impacto social de"
-    ];
+    let output = '';
+    const outputElem = document.getElementById("output");
 
-    switch (currentSec) {
+    switch (currentSection) {
         case 'Ideias de conteúdo':
-            res = `<strong>2000+ ideias para "${tema}":</strong><ul>`;
+            const tipos = [
+                "Top 20", "Tutorial definitivo", "Review completo", "Minha jornada com", "Como dominar",
+                "Dicas avançadas para", "Os melhores ferramentas de", "Desafio de 90 dias", "Segredos que ninguém revela sobre",
+                "Vlog diário sobre", "Erros fatais em", "Comparação épica", "Rotina produtiva com", "Mitos vs realidade sobre",
+                "Como criar em casa", "Tendências 2026 de", "Como mudou minha vida", "Unboxing premium de", "Projetos DIY incríveis para",
+                "Receitas saudáveis com", "Viagens dos sonhos inspiradas em", "Transformação completa com", "Antes e depois chocante de",
+                "Como economizar muito em", "Previsões bombásticas para", "Reação sincera a", "Paródia hilária de", "Colab ideias sobre",
+                "Q&A completo sobre", "Behind the scenes real de", "Um dia intenso com", "Benefícios científicos de", "Como evitar armadilhas em",
+                "Ranking definitivo de", "História completa de", "Fatos impressionantes sobre", "Challenge extremo com", "Tour virtual por",
+                "Testando gadgets de", "Life hacks geniais para", "Série exclusiva sobre", "Novidades quentes em", "Minha opinião polêmica sobre",
+                "Análise profunda de", "Estratégias profissionais para", "Como crescer rápido no nicho de", "Casos reais de sucesso em",
+                "Ferramentas essenciais para", "Ideias baratas e eficazes para", "Motivação diária para", "Os piores produtos de",
+                "Melhor vs pior de", "Guia absoluto para", "Segredos dos tops sobre", "Como eu alcancei resultados com", "Teste de 7 dias de",
+                "Recomendações premium de", "Lista gigante de", "Passo a passo detalhado para", "Entrevista fictícia com especialista em",
+                "Resenha honesta de", "Comparação lado a lado", "Tutorial master de", "Desafio insano de", "24 horas vivendo",
+                "Transformação radical com", "Os mais virais sobre", "Memes engraçados de", "Dicas secretas de experts em",
+                "Rotina matinal com", "Como ganhar dinheiro com", "Os maiores mitos sobre", "Como começar do zero em", "Evolução de"
+            ];
+            output = '<strong>2000 ideias ultra detalhadas geradas para o tema "' + tema + '":</strong><ul>';
             for (let i = 0; i < 2000; i++) {
-                res += `<li>${i+1}. ${random(tipos)} ${tema} – dicas, exemplos e estratégias</li>`;
+                output += `<li>${i+1}. ${randomChoice(tipos)} ${tema} – com dicas práticas, exemplos reais e estratégias comprovadas</li>`;
             }
-            res += '</ul>';
+            output += '</ul>';
             break;
-        case 'Roteiro de vídeo':
-            res = `<pre>Roteiro para "${tema}":
 
-Intro (0:00-0:30): Gancho sobre ${tema}.
-Corpo: Pontos chave com exemplos.
-Conclusão: Resumo e CTA.</pre>`;
-            break;
-        case 'Estrutura de música':
-            res = `<pre>Estrutura para "${tema}":
-
-Intro: Melodia suave.
-Verso 1: Descrição.
-Refrão: Gancho.
-...</pre>`;
-            break;
-        case 'Prompt para IA':
-            res = `<pre>Prompts para "${tema}":
-
-1. Gere história sobre ${tema}.
-2. Plano de negócios para ${tema}.
-...</pre>`;
-            break;
-        case 'Títulos YouTube':
-            res = `<pre>50 Títulos para "${tema}":
-
-1. Como Dominar ${tema}!
-...</pre>`;
-            break;
-        case 'Descrições YouTube':
-            res = `<pre>Descrição para "${tema}":
-
-Explore ${tema}! Capítulos: ...
-Hashtags: #${tema}</pre>`;
-            break;
-        case 'Hashtags':
-            res = `<pre>50 Hashtags para "${tema}":
-
-#${tema} #Dicas${tema} ...</pre>`;
-            break;
-        case 'Ideias Thumbnail':
-            res = `<pre>10 Ideias para "${tema}":
-
-1. Fundo neon com texto.
-...</pre>`;
-            break;
-        case 'Letras de música':
-            res = `<pre>Letras sobre "${tema}":
-
-[Verso] No mundo de ${tema}...
-[Refrão] ${tema} é vida!</pre>`;
-            break;
         default:
-            res = '<p>Em desenvolvimento 🚀</p>';
+            output = '<p>Mais ferramentas incríveis chegando em breve! Este portal está sempre crescendo 🚀</p>';
     }
 
-    out.innerHTML = res;
+    if (outputElem) outputElem.innerHTML = output;
 }
 
 // ============================================================================
 //                          INICIALIZAÇÃO
 // ============================================================================
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
     init3D();
     checkSession();
 
     let theme = localStorage.getItem('theme') || 'dark';
-    if (theme === 'light') {
-        document.body.classList.add('light');
-        document.getElementById('theme').textContent = '☀️';
-    } else {
-        document.getElementById('theme').textContent = '🌙';
-    }
+    if (theme === 'light') document.body.classList.add('light');
+    document.getElementById('theme').innerHTML = theme === 'light' ? '🌙' : '☀️';
 
     document.getElementById('theme').onclick = () => {
-        document.body.classList.toggle('light');
-        theme = document.body.classList.contains('light') ? 'light' : 'dark';
-        localStorage.setItem('theme', theme);
-        document.getElementById('theme').textContent = theme === 'light' ? '☀️' : '🌙';
-        particles.material.color.set(theme === 'light' ? 0x5e00e0 : 0x00e5ff);
+        document.body.classList.toggle('light-mode');
+        let newTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+        localStorage.setItem('theme', newTheme);
+        document.getElementById('themeToggle').innerHTML = newTheme === 'light' ? '🌙' : '☀️';
     };
 
-    document.getElementById('entrar').onclick = login;
-    document.getElementById('cadastrar').onclick = register;
+    document.getElementById("loginBtn").onclick = login;
+    document.getElementById("registerBtn").onclick = register;
 
-    document.getElementById('ir-registro').onclick = (e) => {
+    document.getElementById("goRegister").onclick = (e) => {
         e.preventDefault();
-        document.getElementById('login').classList.add('hidden');
-        document.getElementById('registro').classList.remove('hidden');
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("registerBox").classList.remove("hidden");
     };
 
-    document.getElementById('ir-login').onclick = (e) => {
+    document.getElementById("goLogin").onclick = (e) => {
         e.preventDefault();
-        document.getElementById('registro').classList.add('hidden');
-        document.getElementById('login').classList.remove('hidden');
+        document.getElementById("registerBox").classList.add("hidden");
+        document.getElementById("loginBox").classList.remove("hidden");
     };
 
-    document.getElementById('logout').onclick = logout;
-
-    document.querySelectorAll('.menu > div').forEach(div => {
-        div.onclick = () => showSection(div.dataset.sec);
-    });
+    document.getElementById("logoutBtn").onclick = logout;
 });
 </script>
 </body>
