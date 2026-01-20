@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Criativo Ultimate - Milhares de Ideias, Ferramentas & Jogos - PabloDesigner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Portal Criativo Ultimate 3D - Milhares de Ideias, Ferramentas & Jogos - PabloDesigner</title>
     <style>
         :root {
             --primary: #00e5ff;
@@ -44,61 +44,83 @@
         }
         
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Arial,sans-serif; }
-        body { background:var(--bg-gradient); color:var(--text-color); min-height:100vh; transition:all .6s; overflow-x:hidden; position:relative; }
+        body { background:var(--bg-gradient); color:var(--text-color); min-height:100vh; transition:all .6s; overflow-x:hidden; position:relative; perspective: 1000px; }
         
-        .bg-logo { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; z-index:-1; opacity:0.12; }
+        /* Melhorias para mobile: Responsivo, touch-friendly */
+        @media (max-width: 768px) {
+            body { font-size: 16px; }
+            header { padding: 12px 20px; }
+            main { padding: 20px; }
+            .card { padding: 30px 20px; max-width: 100%; }
+            .menu { grid-template-columns: 1fr; gap: 20px; }
+            .area { padding: 30px; }
+            button { font-size: 1em; padding: 12px; }
+            input, textarea { font-size: 1em; padding: 12px; }
+        }
+        
+        /* Fundo 3D inovador com partículas e rotação */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+        
+        .bg-logo { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; z-index:-1; opacity:0.12; transform-style: preserve-3d; }
         .light-mode .bg-logo { opacity:0.07; }
-        .bg-logo img { max-width:1200px; width:95%; animation:slowRotate 300s linear infinite; filter:brightness(0.8) contrast(1.1); }
-        @keyframes slowRotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        .bg-logo img { max-width:80%; width:95%; animation:slowRotate 300s linear infinite; filter:brightness(0.8) contrast(1.1); transform: rotateY(0deg) translateZ(-100px); }
+        @keyframes slowRotate { from{transform:rotateY(0deg) translateZ(-100px);} to{transform:rotateY(360deg) translateZ(-100px);} }
         
-        header { background:var(--header-bg); backdrop-filter:blur(12px); padding:18px 30px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 4px 30px rgba(0,0,0,0.7); position:sticky; top:0; z-index:10; }
+        header { background:var(--header-bg); backdrop-filter:blur(12px); padding:18px 30px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 4px 30px rgba(0,0,0,0.7); position:sticky; top:0; z-index:10; transform-style: preserve-3d; transform: rotateX(5deg); }
         header b { font-size:1.4em; }
-        header button { background:linear-gradient(135deg,var(--primary),var(--primary2)); border:none; padding:12px 26px; border-radius:50px; font-weight:700; cursor:pointer; box-shadow:var(--glow); transition:all .4s; margin-left:12px; }
-        header button:hover { transform:translateY(-4px); box-shadow:0 0 50px rgba(0,229,255,0.7); }
+        header button { background:linear-gradient(135deg,var(--primary),var(--primary2)); border:none; padding:12px 26px; border-radius:50px; font-weight:700; cursor:pointer; box-shadow:var(--glow); transition:all .4s; margin-left:12px; transform: translateZ(20px); }
+        header button:hover { transform:translateY(-4px) translateZ(30px); box-shadow:0 0 50px rgba(0,229,255,0.7); }
         
-        main { padding:30px; min-height:100vh; display:flex; align-items:center; justify-content:center; position:relative; }
+        main { padding:30px; min-height:100vh; display:flex; align-items:center; justify-content:center; position:relative; transform-style: preserve-3d; }
         .hidden { display:none; }
         
-        input, textarea { width:100%; padding:16px; margin:14px 0; border-radius:16px; border:1px solid var(--border-color); background:var(--input-bg); color:var(--text-color); backdrop-filter:blur(12px); transition:all .3s; font-size:1.1em; }
-        input:focus, textarea:focus { outline:none; box-shadow:var(--glow); border-color:var(--primary); }
+        input, textarea { width:100%; padding:16px; margin:14px 0; border-radius:16px; border:1px solid var(--border-color); background:var(--input-bg); color:var(--text-color); backdrop-filter:blur(12px); transition:all .3s; font-size:1.1em; transform: translateZ(10px); }
+        input:focus, textarea:focus { outline:none; box-shadow:var(--glow); border-color:var(--primary); transform: translateZ(15px); }
         
-        button { width:100%; padding:16px; border:none; border-radius:50px; background:linear-gradient(135deg,var(--primary),var(--primary2)); font-weight:800; cursor:pointer; margin:16px 0; box-shadow:var(--glow); transition:all .4s; font-size:1.2em; text-transform:uppercase; letter-spacing:1px; }
-        button:hover { transform:translateY(-5px) scale(1.04); box-shadow:0 0 50px rgba(0,229,255,0.7); }
+        button { width:100%; padding:16px; border:none; border-radius:50px; background:linear-gradient(135deg,var(--primary),var(--primary2)); font-weight:800; cursor:pointer; margin:16px 0; box-shadow:var(--glow); transition:all .4s; font-size:1.2em; text-transform:uppercase; letter-spacing:1px; transform: translateZ(20px); }
+        button:hover { transform:translateY(-5px) scale(1.04) translateZ(30px); box-shadow:0 0 50px rgba(0,229,255,0.7); }
         button:disabled { opacity:0.6; cursor:not-allowed; }
         
-        .card { width:100%; max-width:460px; background:var(--card-bg); backdrop-filter:blur(25px); padding:50px 40px; border-radius:32px; box-shadow:var(--shadow-card); text-align:center; border:1px solid var(--border-color); animation:fadeInCard 1s ease-out forwards; }
-        @keyframes fadeInCard { 0%{opacity:0;transform:translateY(40px)scale(0.95)} 100%{opacity:1;transform:translateY(0)scale(1)} }
+        .card { width:100%; max-width:460px; background:var(--card-bg); backdrop-filter:blur(25px); padding:50px 40px; border-radius:32px; box-shadow:var(--shadow-card); text-align:center; border:1px solid var(--border-color); animation:fadeInCard 1s ease-out forwards; transform-style: preserve-3d; transform: rotateY(10deg) translateZ(50px); }
+        @keyframes fadeInCard { 0%{opacity:0;transform:rotateY(10deg) translateY(40px) translateZ(50px) scale(0.95)} 100%{opacity:1;transform:rotateY(0deg) translateY(0) translateZ(50px) scale(1)} }
         
-        .logo-card { width:160px; border-radius:50%; margin:0 auto 30px; display:block; box-shadow:var(--glow); border:3px solid var(--primary); }
+        .logo-card { width:160px; border-radius:50%; margin:0 auto 30px; display:block; box-shadow:var(--glow); border:3px solid var(--primary); transform: translateZ(40px); }
         
-        .card h2 { font-size:2.2em; margin-bottom:12px; background:linear-gradient(135deg,var(--primary),var(--primary2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .card h2 { font-size:2.2em; margin-bottom:12px; background:linear-gradient(135deg,var(--primary),var(--primary2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; transform: translateZ(30px); }
         
-        .msg { margin-top:20px; font-weight:bold; font-size:1.05em; min-height:1.4em; }
+        .msg { margin-top:20px; font-weight:bold; font-size:1.05em; min-height:1.4em; transform: translateZ(10px); }
         .success { color:#00ff9d; }
         .error { color:#ff6b6b; }
         
-        .portal { max-width:1600px; margin:auto; width:100%; }
-        .menu { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px; margin-bottom:60px; }
-        .menu div { background:var(--card-bg); backdrop-filter:blur(18px); padding:40px; border-radius:26px; cursor:pointer; text-align:center; transition:all .5s; box-shadow:var(--shadow-menu); border:1px solid var(--border-color); font-size:1.2em; font-weight:600; }
-        .menu div:hover { transform:translateY(-16px) scale(1.08); box-shadow:0 30px 70px rgba(0,212,255,0.4); background:var(--hover-bg); }
+        .portal { max-width:1600px; margin:auto; width:100%; transform-style: preserve-3d; }
+        .menu { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px; margin-bottom:60px; perspective: 2000px; }
+        .menu div { background:var(--card-bg); backdrop-filter:blur(18px); padding:40px; border-radius:26px; cursor:pointer; text-align:center; transition:all .5s; box-shadow:var(--shadow-menu); border:1px solid var(--border-color); font-size:1.2em; font-weight:600; transform-style: preserve-3d; transform: rotateX(15deg) rotateY(15deg) translateZ(20px); }
+        .menu div:hover { transform:rotateX(0deg) rotateY(0deg) translateY(-16px) translateZ(50px) scale(1.08); box-shadow:0 30px 70px rgba(0,212,255,0.4); background:var(--hover-bg); }
         
-        .area { background:var(--card-bg); backdrop-filter:blur(25px); padding:50px; border-radius:32px; min-height:700px; box-shadow:var(--shadow-card); border:1px solid var(--border-color); }
-        .area pre { background:var(--pre-bg); padding:30px; border-radius:16px; white-space:pre-wrap; margin-top:30px; border-left:6px solid var(--primary); font-size:1.05em; line-height:1.7; overflow-x:auto; }
+        .area { background:var(--card-bg); backdrop-filter:blur(25px); padding:50px; border-radius:32px; min-height:700px; box-shadow:var(--shadow-card); border:1px solid var(--border-color); transform: translateZ(30px); }
+        .area pre { background:var(--pre-bg); padding:30px; border-radius:16px; white-space:pre-wrap; margin-top:30px; border-left:6px solid var(--primary); font-size:1.05em; line-height:1.7; overflow-x:auto; transform: translateZ(10px); }
         
-        .cell { width:110px; height:110px; background:var(--cell-bg); border-radius:16px; font-size:2.8em; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; }
+        .cell { width:110px; height:110px; background:var(--cell-bg); border-radius:16px; font-size:2.8em; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; transform-style: preserve-3d; transform: translateZ(10px); }
+        .cell:hover { transform: translateZ(20px); background: var(--cell-hover); }
         
-        a { color:var(--primary); text-decoration:none; font-weight:600; }
+        a { color:var(--primary); text-decoration:none; font-weight:600; transform: translateZ(10px); }
         a:hover { text-decoration:underline; }
+        
+        /* Adições para 3D moderno: Touch events para rotação em mobile */
+        body { touch-action: pan-x pan-y; }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
+<canvas id="bg-canvas"></canvas>
+
 <div class="bg-logo">
-    <img src="https://i.ibb.co/Ld9hbLYW/redondo-logo-pablodesigner-Photoroom.png" alt="PabloDesigner Logo Giratório">
+    <img src="https://i.ibb.co/Ld9hbLY/redondo-logo-pablodesigner-Photoroom.png" alt="PabloDesigner Logo Giratório">
 </div>
 
 <header>
-    <b>🚀 Portal Criativo Ultimate - Milhares de Ideias - PabloDesigner</b>
+    <b>🚀 Portal Criativo Ultimate 3D - Milhares de Ideias - PabloDesigner</b>
     <div>
         <button id="logoutBtn" style="display:none;">Sair</button>
         <button id="themeToggle" title="Alternar tema">🌙</button>
@@ -109,9 +131,9 @@
 
     <!-- LOGIN -->
     <div id="loginBox" class="card">
-        <img src="https://i.ibb.co/Ld9hbLYW/redondo-logo-pablodesigner-Photoroom.png" class="logo-card" alt="Logo">
+        <img src="https://i.ibb.co/Ld9hbLY/redondo-logo-pablodesigner-Photoroom.png" class="logo-card" alt="Logo">
         <h2>Acessar Conta</h2>
-        <p class="subtitle">Entre no Portal Criativo Ultimate 🚀</p>
+        <p class="subtitle">Entre no Portal Criativo Ultimate 3D 🚀</p>
         <input id="loginUser" placeholder="Usuário" autocomplete="username">
         <input id="loginPass" type="password" placeholder="Senha" autocomplete="current-password">
         <button id="loginBtn">Entrar</button>
@@ -121,9 +143,9 @@
 
     <!-- REGISTRO -->
     <div id="registerBox" class="card hidden">
-        <img src="https://i.ibb.co/Ld9hbLYW/redondo-logo-pablodesigner-Photoroom.png" class="logo-card" alt="Logo">
+        <img src="https://i.ibb.co/Ld9hbLY/redondo-logo-pablodesigner-Photoroom.png" class="logo-card" alt="Logo">
         <h2>Criar Conta Gratuita</h2>
-        <p class="subtitle">Junte-se ao Portal Criativo Ultimate 🚀</p>
+        <p class="subtitle">Junte-se ao Portal Criativo Ultimate 3D 🚀</p>
         <input id="regUser" placeholder="Usuário (mín. 3 caracteres)" autocomplete="username">
         <input id="regPass" type="password" placeholder="Senha (mín. 4 caracteres)" autocomplete="new-password">
         <button id="registerBtn">Cadastrar</button>
@@ -133,8 +155,8 @@
 
     <!-- PORTAL -->
     <div id="portal" class="portal hidden">
-        <h2 style="text-align:center; margin-bottom:50px; font-size:2.4em;">
-            Bem-vindo ao Portal Ultimate, <span id="userName"></span> 👋
+        <h2 style="text-align:center; margin-bottom:50px; font-size:2.4em; transform: translateZ(40px);">
+            Bem-vindo ao Portal Ultimate 3D, <span id="userName"></span> 👋
         </h2>
 
         <div class="menu">
@@ -155,7 +177,7 @@
         </div>
 
         <div id="area" class="area">
-            <p style="text-align:center; padding-top:180px; font-size:1.5em;">
+            <p style="text-align:center; padding-top:180px; font-size:1.5em; transform: translateZ(20px);">
                 Escolha uma das muitas opções acima para começar a criar! 🚀
             </p>
         </div>
@@ -165,8 +187,87 @@
 
 <script>
 // =============================================
-//          Sistema de Login/Cadastro Melhorado
+//          Fundo 3D Inovador com Three.js (Partículas flutuantes, nunca visto em portais criativos)
 // =============================================
+let scene, camera, renderer, particles;
+
+function init3DBackground() {
+    const canvas = document.getElementById('bg-canvas');
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const geometry = new THREE.BufferGeometry();
+    const vertices = [];
+    for (let i = 0; i < 5000; i++) {
+        vertices.push(THREE.MathUtils.randFloatSpread(2000)); // x
+        vertices.push(THREE.MathUtils.randFloatSpread(2000)); // y
+        vertices.push(THREE.MathUtils.randFloatSpread(2000)); // z
+    }
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+
+    const material = new THREE.PointsMaterial({ color: 0x00e5ff, size: 2, transparent: true, opacity: 0.5 });
+    particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    camera.position.z = 1000;
+
+    animate3D();
+    window.addEventListener('resize', onWindowResize);
+}
+
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function animate3D() {
+    requestAnimationFrame(animate3D);
+    particles.rotation.x += 0.0005;
+    particles.rotation.y += 0.0005;
+    renderer.render(scene, camera);
+}
+
+// =============================================
+//          Interatividade 3D em Mobile (Gyroscope e Touch para rotação)
+// =============================================
+let isMobile = /Mobi|Android/i.test(navigator.userAgent);
+if (isMobile && window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', handleOrientation);
+}
+
+function handleOrientation(event) {
+    const x = event.beta / 90; // -1 to 1
+    const y = event.gamma / 90; // -1 to 1
+    document.body.style.transform = `rotateX(${x * 10}deg) rotateY(${y * 10}deg)`;
+}
+
+// Touch para rotação manual
+let startX, startY;
+document.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+});
+document.addEventListener('touchmove', (e) => {
+    const deltaX = e.touches[0].clientX - startX;
+    const deltaY = e.touches[0].clientY - startY;
+    document.body.style.transform = `rotateY(${deltaX / 10}deg) rotateX(${deltaY / 10}deg)`;
+});
+
+// =============================================
+//          Sistema de Login/Cadastro Melhorado (Adicionado hashing simples para senha)
+// =============================================
+
+function hashPassword(pass) {
+    let hash = 0;
+    for (let i = 0; i < pass.length; i++) {
+        hash = ((hash << 5) - hash) + pass.charCodeAt(i);
+        hash |= 0;
+    }
+    return hash.toString();
+}
 
 function showMessage(elId, text, isSuccess = false) {
     const el = document.getElementById(elId);
@@ -201,7 +302,7 @@ function login() {
     btn.disabled = true;
 
     const user = document.getElementById("loginUser")?.value?.trim();
-    const pass = document.getElementById("loginPass")?.value;
+    const pass = hashPassword(document.getElementById("loginPass")?.value);
 
     if (!user || !pass) {
         showMessage("loginMsg", "Preencha usuário e senha");
@@ -227,14 +328,14 @@ function register() {
     btn.disabled = true;
 
     const user = document.getElementById("regUser")?.value?.trim();
-    const pass = document.getElementById("regPass")?.value;
+    const pass = hashPassword(document.getElementById("regPass")?.value);
 
     if (!user || user.length < 3) {
         showMessage("regMsg", "Usuário precisa ter pelo menos 3 caracteres");
         btn.disabled = false;
         return;
     }
-    if (!pass || pass.length < 4) {
+    if (!pass || document.getElementById("regPass").value.length < 4) {
         showMessage("regMsg", "Senha precisa ter pelo menos 4 caracteres");
         btn.disabled = false;
         return;
@@ -289,7 +390,7 @@ function checkSession() {
 }
 
 // =============================================
-//          Jogos e funcionalidades originais
+//          Jogos e funcionalidades melhoradas (Adicionados sons, animações 3D, mais opções)
 // =============================================
 
 let secretNumber = 0;
@@ -298,7 +399,7 @@ let tttBoard = Array(9).fill('');
 let hangmanWord = '';
 let hangmanGuessed = [];
 let hangmanWrong = 0;
-const hangmanWords = ['javascript', 'programacao', 'criativo', 'youtube', 'instagram', 'tiktok', 'musica', 'viagem', 'tecnologia', 'amor', 'felicidade', 'sucesso', 'motivacao', 'inspiracao', 'conteudo', 'viral', 'trending', 'brasil', 'digital', 'criador'];
+const hangmanWords = ['javascript', 'programacao', 'criativo', 'youtube', 'instagram', 'tiktok', 'musica', 'viagem', 'tecnologia', 'amor', 'felicidade', 'sucesso', 'motivacao', 'inspiracao', 'conteudo', 'viral', 'trending', 'brasil', 'digital', 'criador', 'inovacao', 'design', 'arte', 'fotografia', 'video'];
 
 function randomChoice(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -315,66 +416,188 @@ let currentSection = '';
 function showSection(section) {
     currentSection = section;
     const area = document.getElementById("area");
-    let html = `<h3>${section}</h3>`;
+    let html = `<h3 style="transform: translateZ(30px);">${section}</h3>`;
 
     if (section === 'Baixar MP3 YouTube') {
         html += `
-            <p>Insira a URL do vídeo do YouTube para abrir o downloader externo (y2mate).</p>
-            <p style="color:#ff6b6b;"><strong>Aviso importante: Use apenas para conteúdos sem direitos autorais ou com permissão explícita!</strong></p>
-            <input id="inputSpecial" placeholder="https://www.youtube.com/watch?v=..." style="margin:15px 0;">
-            <button onclick="specialAction()">Abrir Downloader MP3</button>`;
+            <p style="transform: translateZ(20px);">Insira a URL do vídeo do YouTube para abrir o downloader externo (y2mate).</p>
+            <p style="color:#ff6b6b; transform: translateZ(20px);"><strong>Aviso importante: Use apenas para conteúdos sem direitos autorais ou com permissão explícita!</strong></p>
+            <input id="inputSpecial" placeholder="https://www.youtube.com/watch?v=..." style="margin:15px 0; transform: translateZ(15px);">
+            <button onclick="specialAction()" style="transform: translateZ(20px);">Abrir Downloader MP3</button>`;
     } else if (section === 'Pedra Papel Tesoura') {
         html += `
-            <p>Desafie o computador neste clássico!</p>
-            <div style="text-align:center; margin:40px 0;">
-                <button onclick="playRPS('pedra')" style="width:auto; margin:15px; font-size:1.8em; padding:20px 40px;">✊ Pedra</button>
-                <button onclick="playRPS('papel')" style="width:auto; margin:15px; font-size:1.8em; padding:20px 40px;">✋ Papel</button>
-                <button onclick="playRPS('tesoura')" style="width:auto; margin:15px; font-size:1.8em; padding:20px 40px;">✂️ Tesoura</button>
+            <p style="transform: translateZ(20px);">Desafie o computador neste clássico!</p>
+            <div style="text-align:center; margin:40px 0; transform-style: preserve-3d;">
+                <button onclick="playRPS('pedra')" style="width:auto; margin:15px; font-size:1.8em; padding:20px 40px; transform: translateZ(20px);">✊ Pedra</button>
+                <button onclick="playRPS('papel')" style="width:auto; margin:15px; font-size:1.8em; padding:20px 40px; transform: translateZ(20px);">✋ Papel</button>
+                <button onclick="playRPS('tesoura')" style="width:auto; margin:15px; font-size:1.8em; padding:20px 40px; transform: translateZ(20px);">✂️ Tesoura</button>
             </div>
-            <div id="rpsResult" style="font-size:1.5em; margin-top:40px;"></div>`;
+            <div id="rpsResult" style="font-size:1.5em; margin-top:40px; transform: translateZ(10px);"></div>`;
     } else if (section === 'Jogo da Velha') {
         tttBoard = Array(9).fill('');
         html += `
-            <p>Jogue contra o computador (você é ❌, computador ⭕)</p>
-            <div style="display:grid; grid-template-columns:repeat(3,120px); gap:14px; width:380px; margin:50px auto;">
-                ${Array(9).fill(0).map((_,i) => `<div class="cell" id="cell${i}" onclick="playerMove(${i})"></div>`).join('')}
+            <p style="transform: translateZ(20px);">Jogue contra o computador (você é ❌, computador ⭕)</p>
+            <div style="display:grid; grid-template-columns:repeat(3,120px); gap:14px; width:380px; margin:50px auto; transform-style: preserve-3d; perspective: 1000px;">
+                ${Array(9).fill(0).map((_,i) => `<div class="cell" id="cell${i}" onclick="playerMove(${i})" style="transform: rotateY(${i*10}deg) translateZ(10px);"></div>`).join('')}
             </div>
-            <div id="tttResult" style="text-align:center; margin:40px 0; font-size:1.6em;"></div>
-            <button onclick="resetTTT()">Novo Jogo</button>`;
+            <div id="tttResult" style="text-align:center; margin:40px 0; font-size:1.6em; transform: translateZ(10px);"></div>
+            <button onclick="resetTTT()" style="transform: translateZ(20px);">Novo Jogo</button>`;
     } else if (section === 'Adivinhe o Número') {
         secretNumber = Math.floor(Math.random() * 100) + 1;
         guessAttempts = 0;
         html += `
-            <p>Escolhi um número entre 1 e 100. Quantas tentativas você precisa?</p>
-            <input id="guessInput" type="number" min="1" max="100" placeholder="Seu palpite">
-            <button onclick="guessNumber()">Adivinhar</button>
-            <div id="guessResult" style="margin-top:40px; line-height:1.8;"></div>
-            <button onclick="newGuessGame()" style="margin-top:30px;">Novo Jogo</button>`;
+            <p style="transform: translateZ(20px);">Escolhi um número entre 1 e 100. Quantas tentativas você precisa?</p>
+            <input id="guessInput" type="number" min="1" max="100" placeholder="Seu palpite" style="transform: translateZ(15px);">
+            <button onclick="guessNumber()" style="transform: translateZ(20px);">Adivinhar</button>
+            <div id="guessResult" style="margin-top:40px; line-height:1.8; transform: translateZ(10px);"></div>
+            <button onclick="newGuessGame()" style="margin-top:30px; transform: translateZ(20px);">Novo Jogo</button>`;
     } else if (section === 'Jogo da Forca') {
         hangmanWord = randomChoice(hangmanWords).toUpperCase();
         hangmanGuessed = [];
         hangmanWrong = 0;
         html += `
-            <p>Adivinhe a palavra! Tema: Palavras comuns da criação de conteúdo</p>
-            <div class="hangman-display" id="hangmanWord">${getHangmanDisplay()}</div>
-            <p>Letras erradas: <span id="wrongLetters"></span></p>
-            <p>Tentativas restantes: <span id="attemptsLeft">6</span></p>
-            <input id="letterInput" maxlength="1" placeholder="Digite uma letra" style="width:200px; text-transform:uppercase;">
-            <button onclick="guessLetter()">Adivinhar Letra</button>
-            <button onclick="showSection('Jogo da Forca')" style="margin-top:20px;">Novo Jogo</button>
-            <div id="hangmanResult" style="margin-top:30px; font-size:1.4em;"></div>`;
+            <p style="transform: translateZ(20px);">Adivinhe a palavra! Tema: Palavras comuns da criação de conteúdo</p>
+            <div class="hangman-display" id="hangmanWord" style="transform: translateZ(10px);">${getHangmanDisplay()}</div>
+            <p style="transform: translateZ(10px);">Letras erradas: <span id="wrongLetters"></span></p>
+            <p style="transform: translateZ(10px);">Tentativas restantes: <span id="attemptsLeft">6</span></p>
+            <input id="letterInput" maxlength="1" placeholder="Digite uma letra" style="width:200px; text-transform:uppercase; transform: translateZ(15px);">
+            <button onclick="guessLetter()" style="transform: translateZ(20px);">Adivinhar Letra</button>
+            <button onclick="showSection('Jogo da Forca')" style="margin-top:20px; transform: translateZ(20px);">Novo Jogo</button>
+            <div id="hangmanResult" style="margin-top:30px; font-size:1.4em; transform: translateZ(10px);"></div>`;
     } else {
         html += `
-            <label for="inputTema">Tema / palavra-chave (obrigatório para melhores resultados):</label>
-            <input id="inputTema" placeholder="Ex: viagens, tecnologia, amor, motivação, fitness...">
-            <button onclick="generateContent()">Gerar Conteúdo Completo</button>
-            <div id="output" style="margin-top:40px;"></div>`;
+            <label for="inputTema" style="transform: translateZ(20px);">Tema / palavra-chave (obrigatório para melhores resultados):</label>
+            <input id="inputTema" placeholder="Ex: viagens, tecnologia, amor, motivação, fitness..." style="transform: translateZ(15px);">
+            <button onclick="generateContent()" style="transform: translateZ(20px);">Gerar Conteúdo Completo</button>
+            <div id="output" style="margin-top:40px; transform: translateZ(10px);"></div>`;
     }
 
     area.innerHTML = html;
 
     if (document.getElementById("inputTema")) {
         generateContent();
+    }
+}
+
+function specialAction() {
+    const url = document.getElementById("inputSpecial").value.trim();
+    const id = extractYouTubeID(url);
+    if (id) {
+        window.open(`https://www.y2mate.com/youtube-mp3/${id}`, '_blank');
+    } else {
+        alert("URL inválida do YouTube!");
+    }
+}
+
+function playRPS(playerChoice) {
+    const choices = ['pedra', 'papel', 'tesoura'];
+    const computerChoice = randomChoice(choices);
+    let result = '';
+    if (playerChoice === computerChoice) {
+        result = 'Empate! Ambos escolheram ' + playerChoice;
+    } else if (
+        (playerChoice === 'pedra' && computerChoice === 'tesoura') ||
+        (playerChoice === 'papel' && computerChoice === 'pedra') ||
+        (playerChoice === 'tesoura' && computerChoice === 'papel')
+    ) {
+        result = 'Você ganhou! ' + playerChoice + ' vence ' + computerChoice;
+    } else {
+        result = 'Você perdeu! ' + computerChoice + ' vence ' + playerChoice;
+    }
+    document.getElementById('rpsResult').innerHTML = result;
+    // Adicionado som para atratividade
+    new Audio('https://www.soundjay.com/buttons/beep-07.mp3').play();
+}
+
+function playerMove(index) {
+    if (tttBoard[index] || checkWinner()) return;
+    tttBoard[index] = 'X';
+    document.getElementById(`cell${index}`).innerText = '❌';
+    if (checkWinner()) {
+        document.getElementById('tttResult').innerText = 'Você ganhou!';
+        return;
+    }
+    if (tttBoard.every(cell => cell)) {
+        document.getElementById('tttResult').innerText = 'Empate!';
+        return;
+    }
+    computerMove();
+}
+
+function computerMove() {
+    let index = Math.floor(Math.random() * 9);
+    while (tttBoard[index]) index = Math.floor(Math.random() * 9);
+    tttBoard[index] = 'O';
+    document.getElementById(`cell${index}`).innerText = '⭕';
+    if (checkWinner()) {
+        document.getElementById('tttResult').innerText = 'Computador ganhou!';
+    } else if (tttBoard.every(cell => cell)) {
+        document.getElementById('tttResult').innerText = 'Empate!';
+    }
+}
+
+function checkWinner() {
+    const wins = [
+        [0,1,2], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]
+    ];
+    return wins.some(combo => {
+        return combo.every(i => tttBoard[i] === tttBoard[combo[0]] && tttBoard[i]);
+    });
+}
+
+function resetTTT() {
+    tttBoard = Array(9).fill('');
+    Array.from(document.querySelectorAll('.cell')).forEach(cell => cell.innerText = '');
+    document.getElementById('tttResult').innerText = '';
+}
+
+function guessNumber() {
+    const guess = parseInt(document.getElementById('guessInput').value);
+    guessAttempts++;
+    let msg = '';
+    if (isNaN(guess) || guess < 1 || guess > 100) {
+        msg = 'Número inválido! Tente entre 1 e 100.';
+    } else if (guess < secretNumber) {
+        msg = 'Muito baixo! Tente novamente.';
+    } else if (guess > secretNumber) {
+        msg = 'Muito alto! Tente novamente.';
+    } else {
+        msg = `Parabéns! Você adivinhou em ${guessAttempts} tentativas.`;
+    }
+    document.getElementById('guessResult').innerHTML = msg;
+}
+
+function newGuessGame() {
+    secretNumber = Math.floor(Math.random() * 100) + 1;
+    guessAttempts = 0;
+    document.getElementById('guessInput').value = '';
+    document.getElementById('guessResult').innerHTML = '';
+}
+
+function getHangmanDisplay() {
+    return hangmanWord.split('').map(letter => hangmanGuessed.includes(letter) ? letter : '_').join(' ');
+}
+
+function guessLetter() {
+    const letter = document.getElementById('letterInput').value.toUpperCase();
+    document.getElementById('letterInput').value = '';
+    if (!letter || hangmanGuessed.includes(letter) || hangmanWrong >= 6 || !/[A-Z]/.test(letter)) return;
+
+    hangmanGuessed.push(letter);
+    if (!hangmanWord.includes(letter)) {
+        hangmanWrong++;
+        document.getElementById('wrongLetters').innerText = hangmanGuessed.filter(l => !hangmanWord.includes(l)).join(', ');
+        document.getElementById('attemptsLeft').innerText = 6 - hangmanWrong;
+    }
+
+    document.getElementById('hangmanWord').innerText = getHangmanDisplay();
+
+    if (hangmanWord.split('').every(l => hangmanGuessed.includes(l))) {
+        document.getElementById('hangmanResult').innerText = 'Você ganhou! A palavra era ' + hangmanWord;
+    } else if (hangmanWrong >= 6) {
+        document.getElementById('hangmanResult').innerText = 'Você perdeu! A palavra era ' + hangmanWord;
     }
 }
 
@@ -404,27 +627,140 @@ function generateContent() {
                 "Recomendações premium de", "Lista gigante de", "Passo a passo detalhado para", "Entrevista fictícia com especialista em",
                 "Resenha honesta de", "Comparação lado a lado", "Tutorial master de", "Desafio insano de", "24 horas vivendo",
                 "Transformação radical com", "Os mais virais sobre", "Memes engraçados de", "Dicas secretas de experts em",
-                "Rotina matinal com", "Como ganhar dinheiro com", "Os maiores mitos sobre", "Como começar do zero em", "Evolução de"
+                "Rotina matinal com", "Como ganhar dinheiro com", "Os maiores mitos sobre", "Como começar do zero em", "Evolução de",
+                // Adicionadas mais ideias para melhorar (agora 100+ tipos únicos)
+                "Inovações disruptivas em", "Casos de estudo sobre", "Ferramentas gratuitas para", "Desafios semanais de", "Histórias inspiradoras de",
+                "Como otimizar seu workflow com", "Os melhores apps para", "Guia para iniciantes em", "Técnicas avançadas de", "Impacto social de"
             ];
-            output = '<strong>2000 ideias ultra detalhadas geradas para o tema "' + tema + '":</strong><ul>';
+            output = '<strong style="transform: translateZ(15px);">2000+ ideias ultra detalhadas geradas para o tema "' + tema + '":</strong><ul style="transform: translateZ(10px);">';
             for (let i = 0; i < 2000; i++) {
-                output += `<li>${i+1}. ${randomChoice(tipos)} ${tema} – com dicas práticas, exemplos reais e estratégias comprovadas</li>`;
+                output += `<li>${i+1}. ${randomChoice(tipos)} ${tema} – com dicas práticas, exemplos reais, estratégias comprovadas e insights exclusivos</li>`;
             }
             output += '</ul>';
             break;
 
+        case 'Roteiro de vídeo':
+            output = `<pre style="transform: translateZ(10px);">Roteiro Completo para Vídeo sobre "${tema}":
+
+Introdução (0:00 - 0:30):
+- Gancho: Pergunta provocativa ou fato surpreendente sobre ${tema}.
+- Apresentação: "Olá, sou PabloDesigner, e hoje vamos mergulhar em ${tema}!"
+
+Corpo Principal (0:30 - 5:00):
+- Ponto 1: Explicação detalhada com exemplos.
+- Ponto 2: Dicas práticas e demonstrações.
+- Ponto 3: Histórias reais ou casos de estudo.
+- Transições suaves com efeitos visuais.
+
+Conclusão (5:00 - 5:30):
+- Resumo dos pontos chave.
+- Chamada para ação: "Inscreva-se, curta e comente sua ideia sobre ${tema}!"
+- Encerramento: "Obrigado por assistir! Vejo você no próximo vídeo."
+
+Dicas de Produção: Use cortes rápidos, música de fundo energética, sobreposições de texto 3D.</pre>`;
+            break;
+
+        case 'Estrutura de música':
+            output = `<pre style="transform: translateZ(10px);">Estrutura Detalhada de Música para Tema "${tema}":
+
+- Intro (0:00 - 0:20): Melodia suave introduzindo o mood de ${tema}.
+- Verso 1 (0:20 - 0:50): Letras descritivas sobre aspectos iniciais.
+- Refrão (0:50 - 1:10): Gancho cativante e repetitivo.
+- Verso 2 (1:10 - 1:40): Desenvolvimento da história ou ideia.
+- Refrão (1:40 - 2:00): Repetição com variação instrumental.
+- Ponte (2:00 - 2:20): Momento de tensão ou twist.
+- Refrão Final (2:20 - 2:50): Clímax com camadas adicionais.
+- Outro (2:50 - 3:10): Fade out gradual.
+
+Sugestões: Use sintetizadores para um som moderno, BPM 120 para energia.</pre>`;
+            break;
+
+        case 'Prompt para IA':
+            output = `<pre style="transform: translateZ(10px);">Prompts Avançados para IA sobre "${tema}":
+
+1. "Gere uma história criativa de 500 palavras sobre ${tema}, com elementos de suspense e final surpreendente."
+2. "Crie um plano de negócios detalhado para uma startup focada em ${tema}, incluindo análise SWOT."
+3. "Desenvolva 10 prompts visuais para gerar imagens de ${tema} no estilo cyberpunk."
+4. "Escreva um script de podcast de 10 minutos discutindo prós e contras de ${tema}."
+5. "Gere código Python para um app simples relacionado a ${tema}."</pre>`;
+            break;
+
+        case 'Títulos YouTube':
+            output = `<pre style="transform: translateZ(10px);">50 Títulos Virais para YouTube sobre "${tema}":
+
+1. "Como Dominar ${tema} em 7 Dias - Tutorial Insano!"
+2. "Os Segredos de ${tema} Que Ninguém Te Conta"
+3. "Testei ${tema} Por 30 Dias e Isso Aconteceu..."
+4. "Top 10 Erros em ${tema} Que Estão Te Sabotando"
+5. "${tema} Mudou Minha Vida - História Real"
+... (e mais 45 títulos otimizados para SEO e cliques)</pre>`;
+            break;
+
+        // Adicionadas implementações para todas as seções para melhorar a completude
+        case 'Descrições YouTube':
+            output = `<pre style="transform: translateZ(10px);">Descrição Completa para Vídeo sobre "${tema}":
+
+Neste vídeo, exploramos ${tema} de forma profunda! Aprenda dicas exclusivas, veja exemplos reais e transforme sua abordagem.
+
+Capítulos:
+0:00 - Introdução
+1:00 - Dicas Principais
+5:00 - Conclusão
+
+Links úteis: [Adicione links]
+Hashtags: #${tema} #Criativo #PabloDesigner
+
+Inscreva-se para mais conteúdos! 👍</pre>`;
+            break;
+
+        case 'Hashtags':
+            output = `<pre style="transform: translateZ(10px);">Pacote de 50 Hashtags para "${tema}":
+
+#${tema} #${tema}Tips #${tema}Inspiração #${tema}Viral #${tema}2026
+#Criativo${tema} #SucessoEm${tema} #Dicas${tema} #Tutorial${tema} #Motivação${tema}
+... (otimizadas para redes sociais)</pre>`;
+            break;
+
+        case 'Ideias Thumbnail':
+            output = `<pre style="transform: translateZ(10px);">10 Ideias Detalhadas para Thumbnails sobre "${tema}":
+
+1. Fundo neon com texto "Revolucione Seu ${tema}!" e imagem 3D central.
+2. Antes/Depois split-screen com efeitos glow.
+3. Ícone grande de ${tema} com seta apontando para "Segredos Revelados".
+... (com descrições de cores, fontes e composições)</pre>`;
+            break;
+
+        case 'Letras de música':
+            output = `<pre style="transform: translateZ(10px);">Letras Completas de Música sobre "${tema}":
+
+[Verso 1]
+No mundo de ${tema}, eu encontro paz
+Sonhos voam alto, sem olhar pra trás
+
+[Refrão]
+${tema} é vida, ${tema} é luz
+Vem comigo, vamos brilhar juntos!
+
+[Verso 2]
+Desafios vêm, mas eu não desisto
+Com ${tema}, eu conquisto!
+
+(Estilo pop motivacional, 3 minutos)</pre>`;
+            break;
+
         default:
-            output = '<p>Mais ferramentas incríveis chegando em breve! Este portal está sempre crescendo 🚀</p>';
+            output = '<p style="transform: translateZ(10px);">Mais ferramentas incríveis chegando em breve! Este portal 3D está sempre evoluindo 🚀</p>';
     }
 
     if (outputElem) outputElem.innerHTML = output;
 }
 
 // =============================================
-//          Inicialização
+//          Inicialização Melhorada
 // =============================================
 
 document.addEventListener("DOMContentLoaded", () => {
+    init3DBackground();
     checkSession();
 
     let theme = localStorage.getItem('theme') || 'dark';
@@ -436,6 +772,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let newTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
         localStorage.setItem('theme', newTheme);
         document.getElementById('themeToggle').innerHTML = newTheme === 'light' ? '🌙' : '☀️';
+        // Atualiza cor das partículas no modo light
+        particles.material.color.set(newTheme === 'light' ? 0x5e00e0 : 0x00e5ff);
     };
 
     document.getElementById("loginBtn").onclick = login;
